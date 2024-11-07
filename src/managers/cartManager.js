@@ -15,14 +15,14 @@ export default class RecipeManager {
         this.#carts = await this.getAll();
         const cartFound = this.#carts.find((item) => item.id === Number(id));
 
-        if (!cartFoundFound) {
+        if (!cartFound) {
             throw new ErrorManager("ID no encontrado", 404);
         }
 
         return cartFound;
     }
 
-    // Obtiene una lista de recetas
+    // Obtiene los carritos
     async getAll() {
         try {
             this.#carts = await readJsonFile(paths.files, this.#jsonFilename);
@@ -32,7 +32,7 @@ export default class RecipeManager {
         }
     }
 
-    // Obtiene un receta específica por su ID
+    // Obtiene un carrito específico por su ID
     async getOneById(id) {
         try {
             const cartFound = await this.#findOneById(id);
@@ -42,7 +42,7 @@ export default class RecipeManager {
         }
     }
 
-    // Inserta un carrito
+    // Agrega un carrito
     async insertOne(data) {
         try {
             const products = data?.products?.map((item) => {
@@ -64,10 +64,10 @@ export default class RecipeManager {
     }
 
     // Agrega un producto a un carrito o incrementa la cantidad de un producto existente
-    addOneIngredient = async (id, productId) => {
+    addOneProduct = async (id, productId) => {
         try {
             const cartFound = await this.#findOneById(id);
-            const productIndex = recipeFound.ingredients.findIndex((item) => item.ingredient === Number(productId));
+            const productIndex = cartFound.products.findIndex((item) => item.product === Number(productId));
 
             if (productIndex >= 0) {
                 cartFound.products[productIndex].quantity++;

@@ -36,11 +36,11 @@ router.post("/", async (req, res) => {
 
 // Ruta para incrementar en una unidad o agregar un producto específico en una cart por su ID
 
-router.post("/:cid/ingredients/:pid", async (req, res) => {
+router.post("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const { quantity } = req.body;
-        const cart = await cartManager.addOneIngredient(cid, pid, quantity || 1);
+        const cart = await cartManager.addOneProduct(cid, pid, quantity || 1);
         res.status(200).json({ status: "success", payload: cart });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });

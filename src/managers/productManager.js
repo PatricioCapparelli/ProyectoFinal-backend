@@ -21,7 +21,7 @@ export default class IngredientManager {
         }
     }
 
-    // Busca un ingrediente por su ID
+    // Busca un producto por su ID
     async #findOneById(id) {
         this.#products = await this.getAll();
         const productFound = this.#products.find((item) => item.id === Number(id));
@@ -33,7 +33,7 @@ export default class IngredientManager {
         return productFound;
     }
 
-    // Obtiene un ingrediente específico por su ID
+    // Obtiene un producto específico por su ID
     async getOneById(id) {
         try {
             const productFound = await this.#findOneById(id);
@@ -43,12 +43,12 @@ export default class IngredientManager {
         }
     }
 
-    // Inserta un producto
+    // Agrega un producto
     async insertOne(data, file) {
         try {
-            const { title, status, stock } = data;
+            const { title, description, code, price, status, stock, category } = data;
 
-            if (!title || !status || !stock ) {
+            if (!title || !status || !stock || !description || !price || !category || !code ) {
                 throw new ErrorManager("Faltan datos obligatorios", 400);
             }
 
@@ -59,8 +59,12 @@ export default class IngredientManager {
             const product = {
                 id: generateId(await this.getAll()),
                 title,
-                status: convertToBoolean(status),
+                description,
+                code,
+                price: Number(price),
+                status: true || convertToBoolean(status),
                 stock: Number(stock),
+                category: category,
                 thumbnail: file?.filename,
             };
 
@@ -74,18 +78,22 @@ export default class IngredientManager {
         }
     }
 
-    // Actualiza un ingrediente en específico
+    // Actualiza un producto en específico
     async updateOneById(id, data, file) {
         try {
-            const { title, status, stock } = data;
+            const { title, description, code, price, status, stock, category } = data;
             const productFound = await this.#findOneById(id);
             const newThumbnail = file?.filename;
 
             const product = {
                 id: productFound.id,
                 title: title || productFound.title,
+                description: description || productFound.description,
+                code: code || productFound.code,
+                price: price ? Number(price) : productFound.price,
                 status: status ? convertToBoolean(status) : productFound.status,
                 stock: stock ? Number(stock) : productFound.stock,
+                category: category || productFound.category,
                 thumbnail: newThumbnail || productFound.thumbnail,
             };
 
@@ -105,7 +113,7 @@ export default class IngredientManager {
         }
     }
 
-    // Elimina un ingrediente en específico
+    // Elimina un producto en específico
     async deleteOneById (id) {
         try {
             const productFound = await this.#findOneById(id);
