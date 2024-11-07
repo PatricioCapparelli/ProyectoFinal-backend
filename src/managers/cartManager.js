@@ -1,7 +1,7 @@
 import paths from "../utils/paths.js";
 import { readJsonFile, writeJsonFile } from "../utils/fileHandler.js";
 import { generateId } from "../utils/collectionHandler.js";
-import ErrorManager from "../errorManager.js";
+import ErrorManager from "./errorManager.js";
 
 export default class RecipeManager {
     #jsonFilename;

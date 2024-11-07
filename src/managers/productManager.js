@@ -43,7 +43,7 @@ export default class IngredientManager {
         }
     }
 
-    // Inserta un ingrediente
+    // Inserta un producto
     async insertOne(data, file) {
         try {
             const { title, status, stock } = data;
@@ -52,9 +52,9 @@ export default class IngredientManager {
                 throw new ErrorManager("Faltan datos obligatorios", 400);
             }
 
-            if (!file?.filename) {
-                throw new ErrorManager("Falta el archivo de la imagen", 400);
-            }
+            // if (!file?.filename) {
+            //     throw new ErrorManager("Falta el archivo de la imagen", 400);
+            // }
 
             const product = {
                 id: generateId(await this.getAll()),
