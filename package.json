@@ -1,10 +1,11 @@
 {
   "name": "backend-ch",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/app.js",
   "type": "module",
   "scripts": {
     "start": "node --no-warnings ./src/app.js",
+    "dev": "nodemon ./app.js",
     "stop-windows": "taskkill /F /IM node.exe"
   },
   "keywords": [],
@@ -12,8 +13,8 @@
   "license": "ISC",
   "description": "Primera Pre-entrega del Proyecto Backend",
   "devDependencies": {
-    "nodemon": "^3.1.7",
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.7"
   },
   "dependencies": {
     "express": "^4.21.1",
