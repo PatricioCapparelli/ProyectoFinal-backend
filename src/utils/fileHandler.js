@@ -7,7 +7,7 @@ const validateFilePathAndName = (filepath, filename) => {
     if (!filename) throw new Error(`El nombre del archivo ${filename} no fue proporcionado.`);
 };
 
-// Leé el contenido de un archivo
+// Lee el archivo
 export const readJsonFile = async (filepath, filename) => {
     validateFilePathAndName(filepath, filename);
 
@@ -19,6 +19,7 @@ export const readJsonFile = async (filepath, filename) => {
     }
 };
 
+// escribe el archivo
 export const writeJsonFile = async (filepath, filename, content) => {
     validateFilePathAndName(filepath, filename);
 
@@ -31,6 +32,7 @@ export const writeJsonFile = async (filepath, filename, content) => {
     }
 };
 
+// elimina el archivo
 export const deleteFile = async (filepath, filename) => {
     validateFilePathAndName(filepath, filename);
 

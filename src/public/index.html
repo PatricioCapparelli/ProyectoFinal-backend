@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,7 +10,7 @@
 <body>
     <h1>FORMULARIO</h1>
 
-    <form action="/api/products" method="post">
+    <form action="/api/products" method="post" enctype="multipart/form-data">
         <div>
             <label for="name"> Nombre </label>
             <input type="text" id="name" name="name">
@@ -19,6 +19,10 @@
             <label for="marca"> Marca </label>
             <input type="text" id="marca" name="marca">
         </div>
+        <div>
+            <label for="file">Imagen</label>
+            <input type="file" id="file" name="file">
+        </div>
 
         <input type="submit" value="Enviar">
     </form>
@@ -26,4 +30,4 @@
 
 </body>
 
-</html> -->
+</html>

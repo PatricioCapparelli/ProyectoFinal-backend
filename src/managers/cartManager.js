@@ -43,6 +43,7 @@ export default class RecipeManager {
     }
 
     // Agrega un carrito
+
     async insertOne(data) {
         try {
             const products = data?.products?.map((item) => {
@@ -64,6 +65,7 @@ export default class RecipeManager {
     }
 
     // Agrega un producto a un carrito o incrementa la cantidad de un producto existente
+
     addOneProduct = async (id, productId) => {
         try {
             const cartFound = await this.#findOneById(id);
@@ -84,4 +86,18 @@ export default class RecipeManager {
             throw new ErrorManager(error.message, error.code);
         }
     };
+
+    //  elimina una cart en especifico
+
+    async deleteOneById (id) {
+        try {
+
+            const index = this.#carts.findIndex((item) => item.id === Number(id));
+            this.#carts.splice(index, 1);
+
+            await writeJsonFile(paths.files, this.#jsonFilename, this.#carts);
+        } catch (error) {
+            throw new ErrorManager(error.message, error.code);
+        }
+    }
 }

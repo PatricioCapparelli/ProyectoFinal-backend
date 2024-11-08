@@ -14,6 +14,7 @@ export default class IngredientManager {
 
     async getAll() {
         try {
+            // lee todos los productos guardados en el json.
             this.#products = await readJsonFile(paths.files, this.#jsonFilename);
             return this.#products;
         } catch (error) {
@@ -52,9 +53,9 @@ export default class IngredientManager {
                 throw new ErrorManager("Faltan datos obligatorios", 400);
             }
 
-            // if (!file?.filename) {
-            //     throw new ErrorManager("Falta el archivo de la imagen", 400);
-            // }
+            if (!file?.filename) {
+                throw new ErrorManager("Falta el archivo de la imagen", 400);
+            }
 
             const product = {
                 id: generateId(await this.getAll()),
@@ -69,6 +70,7 @@ export default class IngredientManager {
             };
 
             this.#products.push(product);
+            // Envia el contenido al json con la funcion write.
             await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
 
             return product;
@@ -86,7 +88,7 @@ export default class IngredientManager {
             const newThumbnail = file?.filename;
 
             const product = {
-                id: productFound.id,
+                ...productFound,
                 title: title || productFound.title,
                 description: description || productFound.description,
                 code: code || productFound.code,
@@ -118,7 +120,7 @@ export default class IngredientManager {
         try {
             const productFound = await this.#findOneById(id);
 
-            // Si tiene thumbnail definido, entonces, elimina la imagen del ingrediente
+            // Si tiene thumbnail definido, entonces, elimina la imagen del producto
             if (productFound.thumbnail) {
                 await deleteFile(paths.images, productFound.thumbnail);
             }
