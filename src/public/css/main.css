@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.error-plantilla {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+
+.products-list{
+    display: grid;
+    place-items: center;
+    gap: 20px;
+}
+
+.products-title{
+    margin-bottom: 10px;
+}
+
+table{
+    margin: 0 auto;
+    width: 300px;
+    border: 1px solid #000;
+    border-spacing: 0;
+}
+
+table tr th,
+table tr td{
+    border: 1px solid #000;
+    padding: 0.25rem;
+}
+
+.link{
+    letter-spacing: 1px;
+}

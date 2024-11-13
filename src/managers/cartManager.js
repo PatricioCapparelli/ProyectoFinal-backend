@@ -3,7 +3,7 @@ import { readJsonFile, writeJsonFile } from "../utils/fileHandler.js";
 import { generateId } from "../utils/collectionHandler.js";
 import ErrorManager from "./errorManager.js";
 
-export default class RecipeManager {
+export default class CartManager {
     #jsonFilename;
     #carts;
 

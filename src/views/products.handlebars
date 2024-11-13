@@ -1,0 +1,20 @@
+<div class="products-list">
+    <h1 class="products-title">Lista de Productos</h1>
+
+<table>
+    <tr>
+        <th>Producto</th>
+        <th>Precio</th>
+        <th>stock</th>
+    </tr>
+    {{#each products}}
+    <tr>
+        <td>{{this.title}}</td>
+        <td>${{this.price}}</td>
+        <td>{{this.stock}}</td>
+    </tr>
+    {{/each}}
+</table>
+
+<p class="link">Hace Click <a href="/products/register"> Aqui </a> Para crear un producto</p>
+</div>

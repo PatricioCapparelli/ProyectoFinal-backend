@@ -13,8 +13,8 @@
 		"id": 21,
 		"title": " remeron",
 		"description": " xl",
-		"code": " 2",
-		"price": 32,
+		"code": " 3",
+		"price": 33,
 		"status": true,
 		"stock": 10,
 		"category": " remeras"
@@ -29,5 +29,14 @@
 		"stock": 10,
 		"category": " remeras",
 		"thumbnail": "file_7865_07112024_233718.png"
+	},
+	{
+		"id": 23,
+		"title": "sdads",
+		"description": "asddsa",
+		"code": "4",
+		"price": 23,
+		"stock": 213,
+		"category": "sadssasd"
 	}
 ]

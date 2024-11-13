@@ -4,7 +4,7 @@ import { generateId } from "../utils/collectionHandler.js";
 import { convertToBoolean } from "../utils/converter.js";
 import ErrorManager from "./errorManager.js";
 
-export default class IngredientManager {
+export default class ProductManager {
     #jsonFilename;
     #products;
 
@@ -45,17 +45,17 @@ export default class IngredientManager {
     }
 
     // Agrega un producto
-    async insertOne(data, file) {
+    async insertOne(data /* file */) {
         try {
-            const { title, description, code, price, status, stock, category } = data;
+            const { title, description, code, price, /* status */ stock, category } = data;
 
-            if (!title || !status || !stock || !description || !price || !category || !code ) {
-                throw new ErrorManager("Faltan datos obligatorios", 400);
-            }
+            // if (!title || !status || !stock || !description || !price || !category || !code ) {
+            //     throw new ErrorManager("Faltan datos obligatorios", 400);
+            // }
 
-            if (!file?.filename) {
-                throw new ErrorManager("Falta el archivo de la imagen", 400);
-            }
+            // if (!file?.filename) {
+            //     throw new ErrorManager("Falta el archivo de la imagen", 400);
+            // }
 
             const product = {
                 id: generateId(await this.getAll()),
@@ -63,10 +63,10 @@ export default class IngredientManager {
                 description,
                 code,
                 price: Number(price),
-                status: true || convertToBoolean(status),
+                // status: true || convertToBoolean(status),
                 stock: Number(stock),
                 category: category,
-                thumbnail: file?.filename,
+                // thumbnail: file?.filename,
             };
 
             this.#products.push(product);
@@ -75,13 +75,13 @@ export default class IngredientManager {
 
             return product;
         } catch (error) {
-            if (file?.filename) await deleteFile(paths.images, file.filename); // Elimina la imagen si ocurre un error
+            // if (file?.filename) await deleteFile(paths.images, file.filename); // Elimina la imagen si ocurre un error
             throw new ErrorManager(error.message, error.code);
         }
     }
 
     // Actualiza un producto en específico
-    async updateOneById(id, data, file) {
+    async updateOneById(id, data /*file*/) {
         try {
             const { title, description, code, price, status, stock, category } = data;
             const productFound = await this.#findOneById(id);
@@ -104,13 +104,13 @@ export default class IngredientManager {
             await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
 
             // Elimina la imagen anterior si es distinta de la nueva
-            if (file?.filename && newThumbnail !== ingredientFound.thumbnail) {
-                await deleteFile(paths.images, ingredientFound.thumbnail);
-            }
+            // if (file?.filename && newThumbnail !== productFound.thumbnail) {
+            //     await deleteFile(paths.images, productFound.thumbnail);
+            // }
 
             return product;
         } catch (error) {
-            if (file?.filename) await deleteFile(paths.images, file.filename); // Elimina la imagen si ocurre un error
+            // if (file?.filename) await deleteFile(paths.images, file.filename); // Elimina la imagen si ocurre un error
             throw new ErrorManager(error.message, error.code);
         }
     }
