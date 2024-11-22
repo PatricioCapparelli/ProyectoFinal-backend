@@ -11,7 +11,6 @@ export const config = (httpServer) => {
 
         socket.on("insert-product", async (data) => {
             try {
-                console.log("hola", data);
                 await productManager.insertOne(data);
 
                 socketServer.emit("products-list", { products: await productManager.getAll() });

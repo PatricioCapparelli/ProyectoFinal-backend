@@ -12,7 +12,7 @@ socket.on("products-list", (data) => {
     productsList.innerText = "";
 
     products.forEach((product) => {
-        productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title} - Precio: ${product.stock}</li>`;
+        productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title} - Stock: ${product.stock}</li>`;
     });
 
 });
@@ -35,11 +35,15 @@ productsForm.addEventListener("submit", (e) => {
 btnDeleteProduct.addEventListener("click", () => {
     const id = productId.value;
     errorMessage.innerText = "";
-    errorMessage.innerText = "";
 
-    if(id > 0){
-        socket.emit("delete-product", { id });
+    if (!id) {
+        errorMessage.innerText = "Ingrese un ID valido.";
+        return;
     }
+
+    socket.emit("delete-product", { id });
+
+    productId.value = "";
 });
 
 socket.on("error-message", (data) => {

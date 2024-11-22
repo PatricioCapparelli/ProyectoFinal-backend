@@ -1,6 +1,5 @@
 import { Router } from "express";
 import ProductManager from "../managers/productManager.js";
-import uploader from "../utils/uplouder.js";
 
 const router = Router();
 const productManager = new ProductManager();
@@ -29,7 +28,7 @@ router.get("/:id", async (req, res) => {
 
 // Ruta para crear un producto, permite la subida de imágenes
 
-router.post("/", /*uploader.single("file")*/ async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const product = await productManager.insertOne(req.body/* req.file*/);
         res.status(201).json({ status: "success", payload: product });
@@ -38,11 +37,11 @@ router.post("/", /*uploader.single("file")*/ async (req, res) => {
     }
 });
 
-// Ruta para actualizar un producto por su ID, permite la subida de imágenes
+// Ruta para actualizar un producto por su ID
 
-router.put("/:id", uploader.single("file"), async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
-        const product = await productManager.updateOneById(req.params.id, req.body, req.file);
+        const product = await productManager.updateOneById(req.params.id, req.body);
         res.status(200).json({ status: "success", payload: product });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });

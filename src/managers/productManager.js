@@ -1,5 +1,5 @@
 import paths from "../utils/paths.js";
-import { readJsonFile, writeJsonFile, deleteFile } from "../utils/fileHandler.js";
+import { readJsonFile, writeJsonFile } from "../utils/fileHandler.js";
 import { generateId } from "../utils/collectionHandler.js";
 import { convertToBoolean } from "../utils/converter.js";
 import ErrorManager from "./errorManager.js";
@@ -45,7 +45,7 @@ export default class ProductManager {
     }
 
     // Agrega un producto
-    async insertOne(data /* file */) {
+    async insertOne(data) {
         try {
             const { title, description, code, price, status, stock, category } = data;
 
@@ -62,7 +62,6 @@ export default class ProductManager {
                 status: convertToBoolean(status),
                 stock: Number(stock),
                 category: category,
-                // thumbnail: file?.filename ?? null,
             };
 
             this.#products.push(product);
@@ -71,17 +70,15 @@ export default class ProductManager {
 
             return product;
         } catch (error) {
-            // if (file?.filename) await deleteFile(paths.images, file.filename); // Elimina la imagen si ocurre un error
             throw new ErrorManager(error.message, error.code);
         }
     }
 
     // Actualiza un producto en específico
-    async updateOneById(id, data /*file*/) {
+    async updateOneById(id, data) {
         try {
             const { title, description, code, price, status, stock, category } = data;
             const productFound = await this.#findOneById(id);
-            const newThumbnail = file?.filename;
 
             const product = {
                 ...productFound,
@@ -92,40 +89,34 @@ export default class ProductManager {
                 status: status ? convertToBoolean(status) : productFound.status,
                 stock: stock ? Number(stock) : productFound.stock,
                 category: category || productFound.category,
-                thumbnail: newThumbnail || productFound.thumbnail,
             };
 
             const index = this.#products.findIndex((item) => item.id === Number(id));
             this.#products[index] = product;
             await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
 
-            // Elimina la imagen anterior si es distinta de la nueva
-            // if (file?.filename && newThumbnail !== productFound.thumbnail) {
-            //     await deleteFile(paths.images, productFound.thumbnail);
-            // }
-
             return product;
         } catch (error) {
-            // if (file?.filename) await deleteFile(paths.images, file.filename); // Elimina la imagen si ocurre un error
             throw new ErrorManager(error.message, error.code);
         }
     }
 
     // Elimina un producto en específico
-    async deleteOneById (id) {
-        try {
-            const productFound = await this.#findOneById(id);
 
-            // Si tiene thumbnail definido, entonces, elimina la imagen del producto
-            if (productFound.thumbnail) {
-                await deleteFile(paths.images, productFound.thumbnail);
+    async deleteOneById(id) {
+        try {
+            const index = this.#products.findIndex((item) => item.id === Number(id));
+
+            if (index === -1) {
+                throw new Error("Producto no encontrado.");
             }
 
-            const index = this.#products.findIndex((item) => item.id === Number(id));
             this.#products.splice(index, 1);
             await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
+
         } catch (error) {
             throw new ErrorManager(error.message, error.code);
         }
     }
+
 }
