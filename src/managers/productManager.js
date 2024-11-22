@@ -47,15 +47,11 @@ export default class ProductManager {
     // Agrega un producto
     async insertOne(data /* file */) {
         try {
-            const { title, description, code, price, /* status */ stock, category } = data;
+            const { title, description, code, price, status, stock, category } = data;
 
-            // if (!title || !status || !stock || !description || !price || !category || !code ) {
-            //     throw new ErrorManager("Faltan datos obligatorios", 400);
-            // }
-
-            // if (!file?.filename) {
-            //     throw new ErrorManager("Falta el archivo de la imagen", 400);
-            // }
+            if (!title || !stock) {
+                throw new ErrorManager("Faltan datos obligatorios", 400);
+            }
 
             const product = {
                 id: generateId(await this.getAll()),
@@ -63,10 +59,10 @@ export default class ProductManager {
                 description,
                 code,
                 price: Number(price),
-                // status: true || convertToBoolean(status),
+                status: convertToBoolean(status),
                 stock: Number(stock),
                 category: category,
-                // thumbnail: file?.filename,
+                // thumbnail: file?.filename ?? null,
             };
 
             this.#products.push(product);

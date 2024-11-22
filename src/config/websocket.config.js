@@ -1,32 +1,33 @@
 import { Server } from "socket.io";
+import ProductManager from "../managers/productManager.js";
 
-export const messages = [];
+const productManager = new ProductManager();
 
 export const config = (httpServer) => {
     const socketServer = new Server(httpServer);
 
-    socketServer.on("connection", (socket) => {
-        const clientId = socket.id;
-        console.log("Conexion establecida:", clientId);
+    socketServer.on("connection", async (socket) => {
+        socketServer.emit("products-list", { products: await productManager.getAll() });
 
-        // socket.on("greet", (data) => {
-        //     console.log(data);
+        socket.on("insert-product", async (data) => {
+            try {
+                console.log("hola", data);
+                await productManager.insertOne(data);
 
-        //     socketServer.emit("greeting", { text: "Que onda" });
-        // });
-
-        socket.on("newText", (data) => {
-            messages.push({ socketId: socket.id, message: data.text });
-            socketServer.emit("message", { messages });
+                socketServer.emit("products-list", { products: await productManager.getAll() });
+            } catch (error) {
+                socketServer.emit("error-message", { message: error.message });
+            }
         });
 
-        socket.on("clearMessages", () => {
-            messages.length = "";
-            socketServer.emit("message", { messages });
-        });
+        socket.on("delete-product", async (data) => {
+            try {
+                await productManager.deleteOneById(data.id);
 
-        socket.on("disconnect", () => {
-            console.log("Se desconecto el cliente:", clientId);
+                socketServer.emit("products-list", { products: await productManager.getAll() });
+            } catch (error) {
+                socketServer.emit("error-message", { message: error.message });
+            }
         });
     });
 };

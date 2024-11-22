@@ -1,36 +1,5 @@
 [
 	{
-		"id": 20,
-		"title": " remeron",
-		"description": " xl",
-		"code": " 2",
-		"price": 32,
-		"status": true,
-		"stock": 10,
-		"category": " remeras"
-	},
-	{
-		"id": 21,
-		"title": " remeron",
-		"description": " xl",
-		"code": " 3",
-		"price": 33,
-		"status": true,
-		"stock": 10,
-		"category": " remeras"
-	},
-	{
-		"id": 22,
-		"title": " remeron",
-		"description": " xl",
-		"code": " 2",
-		"price": 32,
-		"status": true,
-		"stock": 10,
-		"category": " remeras",
-		"thumbnail": "file_7865_07112024_233718.png"
-	},
-	{
 		"id": 23,
 		"title": "sdads",
 		"description": "asddsa",
@@ -38,5 +7,33 @@
 		"price": 23,
 		"stock": 213,
 		"category": "sadssasd"
+	},
+	{
+		"id": 24,
+		"title": "product",
+		"price": null,
+		"status": true,
+		"stock": 222
+	},
+	{
+		"id": 25,
+		"title": "pato",
+		"price": null,
+		"status": true,
+		"stock": 333
+	},
+	{
+		"id": 26,
+		"title": "pato",
+		"price": null,
+		"status": true,
+		"stock": 222
+	},
+	{
+		"id": 27,
+		"title": "weqew",
+		"price": null,
+		"status": true,
+		"stock": 2312
 	}
 ]
