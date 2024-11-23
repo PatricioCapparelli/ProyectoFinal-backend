@@ -1,4 +1,5 @@
-<div class="container">
+<div class="content">
+    <div class="container">
     <header>
         <h1>Home - Productos en tiempo real</h1>
     </header>
@@ -23,7 +24,10 @@
                             <p>¿Esta Activo?</p>
                             <input class="products-form__box-check" type="checkbox" name="status">
                         </div>
-                        <input type="number" name="stock" placeholder="Ingresa el stock">
+                        <div class="products-form__main-fot">
+                            <input type="number" name="price" placeholder="Precio">
+                            <input type="number" name="stock" placeholder="Stock">
+                        </div>
                     </div>
                     <button class="btn products-form__inp" type="submit" value="Guardar">Guardar</button>
                 </form>
@@ -46,6 +50,7 @@
         </div>
 
     </main>
+</div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

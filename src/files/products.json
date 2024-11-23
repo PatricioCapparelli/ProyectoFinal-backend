@@ -1,16 +1,72 @@
 [
 	{
-		"id": 18,
-		"title": "sss",
-		"price": null,
+		"id": 20,
+		"title": "pantalon",
+		"price": 2000,
 		"status": false,
-		"stock": 22
+		"stock": 23
 	},
 	{
-		"id": 19,
+		"id": 21,
 		"title": "remera",
-		"price": null,
+		"price": 800,
 		"status": true,
+		"stock": 23
+	},
+	{
+		"id": 22,
+		"title": "short",
+		"price": 400,
+		"status": false,
+		"stock": 10
+	},
+	{
+		"id": 23,
+		"title": "gorra",
+		"price": 1000,
+		"status": false,
+		"stock": 9
+	},
+	{
+		"id": 24,
+		"title": "buzo",
+		"price": 3000,
+		"status": false,
+		"stock": 6
+	},
+	{
+		"id": 25,
+		"title": "pulsera",
+		"price": 200,
+		"status": false,
+		"stock": 16
+	},
+	{
+		"id": 26,
+		"title": "zapatillas",
+		"price": 2500,
+		"status": false,
 		"stock": 20
+	},
+	{
+		"id": 27,
+		"title": "chaleco",
+		"price": 2300,
+		"status": false,
+		"stock": 11
+	},
+	{
+		"id": 28,
+		"title": "cadena",
+		"price": 300,
+		"status": false,
+		"stock": 26
+	},
+	{
+		"id": 29,
+		"title": "bermuda",
+		"price": 1999,
+		"status": false,
+		"stock": 24
 	}
 ]

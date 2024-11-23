@@ -50,9 +50,9 @@ export default class ProductManager {
 
     async insertOne(data) {
         try {
-            const { title, description, code, price, status, stock, category } = data;
+            const { title, status, stock, price } = data;
 
-            if (!title || !stock) {
+            if (!title || !stock || !price) {
                 throw new ErrorManager("Faltan datos obligatorios", 400);
             }
 
@@ -63,12 +63,9 @@ export default class ProductManager {
             const product = {
                 id: generateId(await this.getAll()),
                 title,
-                description,
-                code,
                 price: Number(price),
                 status: convertToBoolean(status),
                 stock: Number(stock),
-                category: category,
             };
 
             this.#products.push(product);
