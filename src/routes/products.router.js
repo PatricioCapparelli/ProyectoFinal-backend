@@ -4,8 +4,6 @@ import ProductManager from "../managers/productManager.js";
 const router = Router();
 const productManager = new ProductManager();
 
-// Ruta para obtener los productos
-
 router.get("/", async (req, res) => {
     try {
         const products = await productManager.getAll(req.query);
@@ -14,8 +12,6 @@ router.get("/", async (req, res) => {
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }
 });
-
-// Ruta para obtener un producto por su ID
 
 router.get("/:id", async (req, res) => {
     try {
@@ -26,18 +22,14 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// Ruta para crear un producto, permite la subida de imágenes
-
 router.post("/", async (req, res) => {
     try {
-        const product = await productManager.insertOne(req.body/* req.file*/);
+        const product = await productManager.insertOne(req.body);
         res.status(201).json({ status: "success", payload: product });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }
 });
-
-// Ruta para actualizar un producto por su ID
 
 router.put("/:id", async (req, res) => {
     try {
@@ -47,8 +39,6 @@ router.put("/:id", async (req, res) => {
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }
 });
-
-// Ruta para eliminar un producto por su ID
 
 router.delete("/:id", async (req, res) => {
     try {

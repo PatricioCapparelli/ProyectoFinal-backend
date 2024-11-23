@@ -1,100 +1,16 @@
 [
 	{
-		"id": 4,
-		"title": "saadasd",
-		"price": null,
-		"status": false,
-		"stock": 222
-	},
-	{
-		"id": 5,
-		"title": "sdasd",
-		"price": null,
-		"status": false,
-		"stock": 2222
-	},
-	{
-		"id": 6,
-		"title": "asdsad",
-		"price": null,
-		"status": false,
-		"stock": 222
-	},
-	{
-		"id": 7,
-		"title": "sddffd",
-		"price": null,
-		"status": false,
-		"stock": 333
-	},
-	{
-		"id": 8,
-		"title": "ewfwef",
-		"price": null,
-		"status": false,
-		"stock": 33333
-	},
-	{
-		"id": 9,
-		"title": "33",
-		"price": null,
-		"status": false,
-		"stock": 4
-	},
-	{
-		"id": 10,
-		"title": "333",
-		"price": null,
-		"status": false,
-		"stock": 333
-	},
-	{
-		"id": 11,
-		"title": "dffd",
-		"price": null,
-		"status": false,
-		"stock": 33
-	},
-	{
-		"id": 12,
-		"title": "dssf",
-		"price": null,
-		"status": false,
-		"stock": 333
-	},
-	{
-		"id": 13,
-		"title": "2222",
-		"price": null,
-		"status": false,
-		"stock": 222
-	},
-	{
-		"id": 14,
-		"title": "2222",
-		"price": null,
-		"status": false,
-		"stock": 222
-	},
-	{
-		"id": 15,
-		"title": "22222",
-		"price": null,
-		"status": false,
-		"stock": 222
-	},
-	{
-		"id": 16,
-		"title": "dfds",
-		"price": null,
-		"status": false,
-		"stock": 333
-	},
-	{
-		"id": 17,
-		"title": "222",
+		"id": 18,
+		"title": "sss",
 		"price": null,
 		"status": false,
 		"stock": 22
+	},
+	{
+		"id": 19,
+		"title": "remera",
+		"price": null,
+		"status": true,
+		"stock": 20
 	}
 ]

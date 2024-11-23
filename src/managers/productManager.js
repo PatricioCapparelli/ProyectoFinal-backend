@@ -23,6 +23,7 @@ export default class ProductManager {
     }
 
     // Busca un producto por su ID
+
     async #findOneById(id) {
         this.#products = await this.getAll();
         const productFound = this.#products.find((item) => item.id === Number(id));
@@ -34,7 +35,8 @@ export default class ProductManager {
         return productFound;
     }
 
-    // Obtiene un producto específico por su ID
+    // Obtiene un producto especifico por su ID
+
     async getOneById(id) {
         try {
             const productFound = await this.#findOneById(id);
@@ -45,12 +47,17 @@ export default class ProductManager {
     }
 
     // Agrega un producto
+
     async insertOne(data) {
         try {
             const { title, description, code, price, status, stock, category } = data;
 
             if (!title || !stock) {
                 throw new ErrorManager("Faltan datos obligatorios", 400);
+            }
+
+            if (!isNaN(title)) {
+                throw new ErrorManager("Introduzca un nombre valido", 400);
             }
 
             const product = {
@@ -74,7 +81,8 @@ export default class ProductManager {
         }
     }
 
-    // Actualiza un producto en específico
+    // Actualiza un producto en especifico
+
     async updateOneById(id, data) {
         try {
             const { title, description, code, price, status, stock, category } = data;
@@ -101,7 +109,7 @@ export default class ProductManager {
         }
     }
 
-    // Elimina un producto en específico
+    // Elimina un producto en especifico
 
     async deleteOneById(id) {
         try {

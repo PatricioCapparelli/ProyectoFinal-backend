@@ -4,6 +4,17 @@
     margin: 0;
     list-style-type: none;
 }
+
+:root{
+    --border-color: linear-gradient(
+        to right,
+        tomato 0%,
+        gold 100%
+    );
+
+    --section-color: #222;
+}
+
 body, html {
     height: 100%;
     width: 100%;
@@ -33,6 +44,40 @@ body, html {
     height: 100%;
     display: grid;
     place-items: center;
+    font-family: system-ui, -apple-system, sans-serif;
+    align-content: start;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#product-id{
+    width: 100px;
+    margin: 0 auto;
+}
+
+.products-form{
+    display: flex;
+    width: 200px;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.products-form__box{
+    display: flex;
+    gap: 10px;
+    justify-content: start;
+    align-items: center;
+    align-content: center;
+}
+
+.products-form__box-check{
+    margin-top: 4px;
+    width: 18px;
+    height: 18px;
+}
+
+.container header{
+    margin-top: 10px;
 }
 
 .container-list{
@@ -42,14 +87,102 @@ body, html {
     width: 800px;
     height: 500px;
     align-items: center;
+    gap: 20px;
+    color: white;
 }
 
 .section{
+    background: var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
-    border: 2px solid black;
-    border-radius: 8px;
+    border-radius: 12px;
+    position: relative;
+    padding: 5px;
+}
+
+.section-body{
+    background: var(--section-color);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
     padding: 16px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    align-content: space-between;
+    color: white;
+}
+
+.section-body__main{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.section form{
+    display: flex;
+    gap: 10px;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.products-form__main{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.btn{
+    color: #090909;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 0.5em;
+    background: #e8e8e8;
+    cursor: pointer;
+    border: 1px solid #b1b1b1;
+    transition: all 0.3s;
+}
+
+.btn:active{
+    color: #666;
+}
+
+.section.delete div{
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    padding: 10px;
+    font-size: medium;
+}
+
+
+.error-message-container {
+    display: none;
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 0, 0);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    max-width: 300px;
+    color: white;
+    text-align: center;
+}
+
+
+.error-message {
+    font-size: 18px;
+}
+
+
+.error-message-container.active {
+    display: block;
 }

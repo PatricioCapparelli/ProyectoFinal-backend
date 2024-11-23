@@ -1,38 +1,50 @@
 <div class="container">
     <header>
-        <h1>Home - Products in real time</h1>
+        <h1>Home - Productos en tiempo real</h1>
     </header>
 
     <main class="container-list">
         <section class="section product">
-            <h2>Productos</h2>
-            <div>
-                <ul id="products-list"></ul>
+            <div class="section-body">
+                <h2>Productos</h2>
+                <div>
+                    <ul id="products-list"></ul>
+                </div>
             </div>
         </section>
 
         <section class="section form">
-            <h2>Formulario de producto</h3>
-            <form id="products-form">
-                <input type="text" name="title" placeholder="Ingresa el nombre">
-                <div>
-                    <p>¿Esta Activo?</p>
-                    <input type="checkbox" name="status">
-                </div>
-                <input type="number" name="stock" placeholder="Ingresa el stock">
-                <input type="submit" value="Guardar">
-            </form>
-        </section>
-
-        <section class="section delete">
-            <h2>Eliminar Producto</h1>
-            <div>
-                <input type="number" id="product-id">
-                <button id="btn-delete-product">Eliminar</button>
+            <div class="section-body">
+                <h2>Formulario de producto</h3>
+                <form id="products-form">
+                    <div class="products-form__main">
+                        <input id="name-product" type="text" name="title" placeholder="Ingresa el nombre">
+                        <div class="products-form__box">
+                            <p>¿Esta Activo?</p>
+                            <input class="products-form__box-check" type="checkbox" name="status">
+                        </div>
+                        <input type="number" name="stock" placeholder="Ingresa el stock">
+                    </div>
+                    <button class="btn products-form__inp" type="submit" value="Guardar">Guardar</button>
+                </form>
             </div>
         </section>
 
-        <p id="error-message" style="color: red;"></p>
+        <section class="section delete">
+            <div class="section-body">
+                <h2>Eliminar Producto</h1>
+                <div class="section-body__main">
+                    <p>Ingrese el Id del producto que desea eliminar.</p>
+                    <input type="number" id="product-id">
+                </div>
+                <button class="btn" id="btn-delete-product">Eliminar</button>
+            </div>
+        </section>
+
+        <div id="error-message-container" class="error-message-container">
+            <p id="error-message" class="error-message"></p>
+        </div>
+
     </main>
 </div>
 
