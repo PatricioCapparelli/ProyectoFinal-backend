@@ -1,29 +1,29 @@
 import { Server } from "socket.io";
-import ProductManager from "../managers/productManager.js";
+import StudentManager from "../managers/studentManager.js";
 
-const productManager = new ProductManager();
+const studentManager = new StudentManager();
 
 export const config = (httpServer) => {
     const socketServer = new Server(httpServer);
 
     socketServer.on("connection", async (socket) => {
-        socketServer.emit("products-list", { products: await productManager.getAll() });
+        socketServer.emit("students-list", { students: await studentManager.getAll() });
 
-        socket.on("insert-product", async (data) => {
+        socket.on("insert-student", async (data) => {
             try {
-                await productManager.insertOne(data);
+                await studentManager.insertOne(data);
 
-                socketServer.emit("products-list", { products: await productManager.getAll() });
+                socketServer.emit("students-list", { students: await studentManager.getAll() });
             } catch (error) {
                 socketServer.emit("error-message", { message: error.message });
             }
         });
 
-        socket.on("delete-product", async (data) => {
+        socket.on("delete-student", async (data) => {
             try {
-                await productManager.deleteOneById(data.id);
+                await studentManager.deleteOneById(data.id);
 
-                socketServer.emit("products-list", { products: await productManager.getAll() });
+                socketServer.emit("students-list", { students: await studentManager.getAll() });
             } catch (error) {
                 socketServer.emit("error-message", { message: error.message });
             }
