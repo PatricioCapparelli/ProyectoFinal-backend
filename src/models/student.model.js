@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const studentSchema = new Schema({
+    nickName: {
+        type: String,
+        index: { name: "idx_nickname" },
+    },
     firstName: {
         type: String,
         required: [ true, "El nombre es obligatorio" ],
@@ -41,9 +45,23 @@ const studentSchema = new Schema({
         min: [ 1, "La nota debe ser mayor o igual a 1" ],
         max: [ 10, "La nota debe ser menor o igual a 10" ],
     },
+    favoriteMovies: [{
+        movie: {
+            type: Schema.Types.ObjectId,
+            ref: "movies",
+            required: [ true, "La pelicula es obligatoria" ],
+        },
+    }],
 }, {
     timestamps: true,
     versionKey: false,
+});
+
+studentSchema.index({ firstName: 1, lastName: 1 }, { name: "idx_firstname_lastname" });
+
+studentSchema.pre(/^find/, function(next) {
+    // this.populate("favoriteMovies.movie");
+    next();
 });
 
 const Student = model("students", studentSchema);

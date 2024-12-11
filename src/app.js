@@ -4,6 +4,7 @@ import { config as configHandlebars } from "./config/handlebars.config.js";
 import { config as configWebsocket } from "./config/websocket.config.js";
 
 import routerStudents from "./routes/students.router.js";
+import routerMovies from "./routes/movies.router.js";
 import homeViewProducts from "./routes/home.view.router.js";
 import paths from "./utils/paths.js";
 
@@ -23,6 +24,7 @@ configHandlebars(app);
 
 app.use("/", homeViewProducts);
 app.use("/api/students", routerStudents);
+app.use("/api/movies", routerMovies);
 
 app.use("*", (req, res) => {
     res.status(404).render("error404", { title: "error 404" });

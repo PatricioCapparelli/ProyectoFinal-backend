@@ -1,8 +1,19 @@
 import { Router } from "express";
 import StudentManager from "../managers/studentManager.js";
+import student from "../models/student.model.js";
 
 const router = Router();
 const studentManager = new StudentManager();
+
+router.get("/explain", async (req, res) => {
+    try {
+        const filter = { nickName: "Tincho" };
+        const result = await student.find(filter).explain();
+        res.status(200).json({ status: "success", payload: result.executionStats });
+    } catch (error) {
+        res.status(error.code).json({ status: "error", message: error.message });
+    }
+});
 
 router.get("/", async (req, res) => {
     try {
