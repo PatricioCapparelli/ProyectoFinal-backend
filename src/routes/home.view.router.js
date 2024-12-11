@@ -2,19 +2,19 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        res.status(200).render("home", { title: "App Products" });
+        res.render("home", { title: "Home" });
     } catch (error) {
-        res.status(500).send(`<h1>Error</h1><p>${error.message}</p>`);
+        res.status(500).send(`<h1>Error</h1><h3>${error.message}</h3>`);
     }
 });
 
-router.get("/realTimeProducts", (req, res) => {
+router.get("/realTimeProducts", async (req, res) => {
     try {
-        res.status(200).render("realTimeProducts", { title: "Real Time Products" });
+        res.render("realTimeProducts", { title: "Products" });
     } catch (error) {
-        res.status(500).send(`<h1>Error</h1><p>${error.message}</p>`);
+        res.status(500).send(`<h1>Error</h1><h3>${error.message}</h3>`);
     }
 });
 

@@ -1,32 +1,41 @@
 import { Server } from "socket.io";
-import StudentManager from "../managers/studentManager.js";
+import ProductManager from "../managers/ProductManager.js";
 
-const studentManager = new StudentManager();
+const productManager = new ProductManager();
 
 export const config = (httpServer) => {
+
     const socketServer = new Server(httpServer);
 
     socketServer.on("connection", async (socket) => {
-        socketServer.emit("students-list", { students: await studentManager.getAll() });
+        console.log("Conexión establecida", socket.id);
 
-        socket.on("insert-student", async (data) => {
+        socketServer.emit("products-list", { products: await productManager.getAll() });
+
+        socket.on("insert-product", async (data) => {
             try {
-                await studentManager.insertOne(data);
+                await productManager.insertOne(data);
+                socketServer.emit("products-list", { products: await productManager.getAll() });
 
-                socketServer.emit("students-list", { students: await studentManager.getAll() });
             } catch (error) {
                 socketServer.emit("error-message", { message: error.message });
+
             }
         });
 
-        socket.on("delete-student", async (data) => {
+        socket.on("delete-product", async (data) => {
             try {
-                await studentManager.deleteOneById(data.id);
+                await productManager.deleteOneById(Number(data.id));
+                socketServer.emit("products-list", { products: await productManager.getAll() });
 
-                socketServer.emit("students-list", { students: await studentManager.getAll() });
             } catch (error) {
                 socketServer.emit("error-message", { message: error.message });
+
             }
+        });
+
+        socket.on("disconnect", () => {
+            console.log("Se desconecto un cliente");
         });
     });
 };

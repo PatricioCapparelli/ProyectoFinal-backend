@@ -2,7 +2,7 @@ const socket = io();
 
 const productsList = document.getElementById("products-list");
 const productsForm = document.getElementById("products-form");
-const productId = document.getElementById("product-id");
+const productId = document.getElementById("input-product-id");
 const btnDeleteProduct = document.getElementById("btn-delete-product");
 const errorMessage = document.getElementById("error-message");
 const errorMessageContainer = document.getElementById("error-message-container");
@@ -68,11 +68,6 @@ productId.addEventListener("keyup", (e) => {
     }
 });
 
-socket.on("error-message", (data) => {
-    errorMessage.innerText = data.message;
-    abrirPopup();
-});
-
 const abrirPopup = () => {
     if (errorMessage.innerText.trim() !== "") {
 
@@ -86,3 +81,8 @@ const abrirPopup = () => {
         errorMessageContainer.classList.remove("active");
     }
 };
+
+socket.on("error-message", (data) => {
+    errorMessage.innerText = data.message;
+    abrirPopup();
+});
