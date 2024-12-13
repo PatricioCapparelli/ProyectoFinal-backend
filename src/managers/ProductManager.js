@@ -24,34 +24,45 @@ export default class ProductManager {
         return product;
     }
 
-    async getAll(params) {
+    async getOneById(id) {
         try {
-            const $and = [];
-
-            if (params?.title) $and.push({ title: { $regex: params.title, $options: "i" } });
-            const filters = $and.length > 0 ? { $and } : {};
-
-            const sort = {
-                asc: { title: 1 },
-                desc: { title: -1 },
-            };
-
-            const paginationOptions = {
-                limit: params?.limit || 10,
-                page: params?.page || 1,
-                sort: sort[params?.sort] ?? {},
-                lean: true,
-            };
-
-            return await this.#productModel.paginate(filters, paginationOptions);
+            return await this.#findOneById(id);
         } catch (error) {
             throw ErrorManager.handleError(error);
         }
     }
 
-    async getOneById(id) {
+    async getAll(params) {
         try {
-            return await this.#findOneById(id);
+            const $and = [];
+
+            // Filtro por título (si se pasa)
+            if (params?.title) $and.push({ title: { $regex: params.title, $options: "i" } });
+
+            // Filtro por categoría (si se pasa)
+            if (params?.category) $and.push({ category: { $regex: params.category, $options: "i" } });
+
+            // Filtro por disponibilidad (si se pasa)
+            if (params?.status) $and.push({ status: convertToBoolean(params.status) });
+
+            // Filtro combinado
+            const filters = $and.length > 0 ? { $and } : {};
+
+            // Ordenamiento por precio: ascendente o descendente
+            const sort = {
+                asc: { price: 1 },
+                desc: { price: -1 },
+            };
+
+            // Opciones de paginación y ordenamiento
+            const paginationOptions = {
+                limit: params?.limit || 10,
+                page: params?.page || 1,
+                sort: sort[params?.sort] ?? {}, // Si no hay orden, no aplica ningún sort
+                lean: true, // Para obtener resultados más rápidos en formato "lean"
+            };
+
+            return await this.#productModel.paginate(filters, paginationOptions);
         } catch (error) {
             throw ErrorManager.handleError(error);
         }

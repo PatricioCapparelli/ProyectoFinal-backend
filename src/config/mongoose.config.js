@@ -13,5 +13,6 @@ export const connectDB = async () => {
 };
 
 export const isValidId = (id) => {
+    console.log("Verificando ID:", id); // Muestra el ID que estás recibiendo
     return Types.ObjectId.isValid(id);
 };

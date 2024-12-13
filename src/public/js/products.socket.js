@@ -40,6 +40,7 @@ const insertProduct = (e) => {
         status: formdata.get("status") || "off",
         price: formdata.get("price"),
         stock: formdata.get("stock"),
+        category: formdata.get("category"),
     });
 };
 

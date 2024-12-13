@@ -20,7 +20,16 @@ const productSchema = new Schema({
         required: [ true, "El stock es obligatorio" ],
         min: [ 0, "El stock debe ser un valor positivo" ],
     },
+    price: {
+        type: Number,
+        required: [ true, "El precio es obligatorio" ],
+        min: [ 0, "El precio debe ser un valor positivo" ],
+    },
     thumbnail: {
+        type: String,
+        trim: true,
+    },
+    category: {
         type: String,
         trim: true,
     },
@@ -31,6 +40,6 @@ const productSchema = new Schema({
 
 productSchema.plugin(paginate);
 
-const ProductModel = model("products", productSchema);
+const ProductModel = model("product", productSchema);
 
 export default ProductModel;
