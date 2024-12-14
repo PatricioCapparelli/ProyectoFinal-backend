@@ -13,7 +13,7 @@ socket.on("products-list", (data) => {
     productsList.innerText = "";
 
     products.forEach((product) => {
-        productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title} - Precio: $${product.price} - Stock: ${product.stock}</li>`;
+        productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title} - Precio: $${product.price} - Stock: ${product.stock}</li> - Disponibilidad: ${product.status}`;
     });
 });
 
@@ -27,12 +27,32 @@ productsForm.addEventListener("keyup", (e) => {
     }
 });
 
+productsForm.addEventListener("submit", function() {
+    const statusCheckbox = document.querySelector("input[name='status']");
+    const availableCheckbox = document.querySelector("input[name='available']");
+
+    const statusHiddenInput = document.querySelector("input[name='status'][type='hidden']");
+
+    if (statusCheckbox.checked) {
+        statusHiddenInput.value = "true";
+    } else {
+        statusHiddenInput.value = "false";
+    }
+
+    const availableHiddenInput = document.querySelector("input[name='available'][type='hidden']");
+
+    if (availableCheckbox.checked) {
+        availableHiddenInput.value = "true";
+    } else {
+        availableHiddenInput.value = "false";
+    }
+});
+
 const insertProduct = (e) => {
     e.preventDefault();
     const form = e.target;
     const formdata = new FormData(form);
 
-    errorMessage.innerText = "";
     form.reset();
 
     socket.emit("insert-product", {
@@ -41,6 +61,7 @@ const insertProduct = (e) => {
         price: formdata.get("price"),
         stock: formdata.get("stock"),
         category: formdata.get("category"),
+        available: formdata.get("available") || "off",
     });
 };
 

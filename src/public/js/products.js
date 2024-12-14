@@ -9,7 +9,7 @@ const loadProductsList = async () => {
     productsList.innerText = "";
 
     products.forEach((product) => {
-        productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title} - Precio: ${product.price}</li>`;
+        productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title} - Precio: ${product.price} - Disponibilidad: ${product.available}</li>`;
     });
 };
 

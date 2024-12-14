@@ -15,24 +15,38 @@
         </section>
 
         <section class="section form">
-            <div class="section-body">
-                <h2>Formulario de producto</h3>
-                <form id="products-form">
-                    <div class="products-form__main">
-                        <input id="name-product" type="text" name="title" placeholder="Ingresa el nombre">
-                        <div class="products-form__box">
-                            <p>¿Esta Activo?</p>
-                            <input class="products-form__box-check" type="checkbox" name="status">
-                        </div>
-                        <div class="products-form__main-fot">
-                            <input type="number" name="price" placeholder="Precio">
-                            <input type="number" name="stock" placeholder="Stock">
-                        </div>
-                    </div>
-                    <button class="btn products-form__inp" type="submit" value="Guardar">Guardar</button>
-                </form>
+    <div class="section-body">
+        <h2>Formulario de producto</h2>
+        <form id="products-form">
+            <div class="products-form__main">
+                <input id="name-product" type="text" name="title" placeholder="Ingresa el nombre">
+
+                <!-- Campo de estado -->
+                <div class="products-form__box">
+                    <p>¿Está activo?</p>
+                    <input class="products-form__box-check" type="checkbox" name="status">
+                    <!-- Campo oculto para enviar un valor false si no está marcado -->
+                    <input type="hidden" name="status" value="false">
+                </div>
+
+                <div class="products-form__main-fot">
+                    <input type="number" name="price" placeholder="Precio">
+                    <input type="number" name="stock" placeholder="Stock">
+                    <input type="text" name="category" placeholder="Categoría">
+                </div>
+
+                <!-- Campo de disponibilidad con hidden -->
+                <div class="products-form__box">
+                    <p>¿Está disponible?</p>
+                    <input class="products-form__box-check" type="checkbox" name="available" value="true">
+                    <!-- Campo oculto para enviar un valor false si no está marcado -->
+                    <input type="hidden" name="available" value="false">
+                </div>
             </div>
-        </section>
+            <button class="btn products-form__inp" type="submit" value="Guardar">Guardar</button>
+        </form>
+    </div>
+</section>
 
         <section class="section delete">
             <div class="section-body">

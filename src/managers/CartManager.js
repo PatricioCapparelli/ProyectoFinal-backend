@@ -69,61 +69,149 @@ export default class CartManager {
         }
     }
 
+    async updateCart(cartId, products) {
+        try {
+            // Verificamos que el cartId sea válido
+            if (!this.isValidId(cartId)) {
+                throw new ErrorManager("ID de carrito inválido", 400);
+            }
+
+            // Buscamos el carrito por ID
+            const cart = await this.#cartModel.findById(cartId);
+
+            if (!cart) {
+                throw new ErrorManager("Carrito no encontrado", 404);
+            }
+
+            // Actualizamos los productos del carrito
+            products.forEach((item) => {
+                const productIndex = cart.products.findIndex((p) => p.product.toString() === item.productId);
+
+                if (productIndex >= 0) {
+                    // Si el producto ya existe en el carrito, actualizamos la cantidad
+                    cart.products[productIndex].quantity = item.quantity;
+                } else {
+                    // Si el producto no existe, lo agregamos al carrito
+                    cart.products.push({ product: item.productId, quantity: item.quantity });
+                }
+            });
+
+            // Guardamos los cambios en el carrito
+            await cart.save();
+
+            return cart;
+        } catch (error) {
+            console.log("Error al modificar el carrito:", error);
+            throw new ErrorManager("Error al modificar el carrito", 500);
+        }
+    }
+
     isValidId(id) {
         return mongoose.Types.ObjectId.isValid(id);
     }
 
-    async addOneProduct(cartId, productId) {
+    async addOneProduct(cartId, productId, quantity) {
         try {
-            // Elimina los saltos de línea u otros caracteres adicionales del ID
-            const cleanProductId = productId.trim();// Esto eliminará saltos de línea, espacios, etc.
-
-            // Verifica que el cartId y el productId sean ObjectIds válidos
-            if (!this.isValidId(cartId) || !this.isValidId(cleanProductId)) {
+            // Verifica que los IDs sean válidos
+            if (!this.isValidId(cartId) || !this.isValidId(productId)) {
                 throw new ErrorManager("ID inválido", 400);
             }
 
+            // Busca el carrito y el producto
             const cart = await this.#cartModel.findById(cartId);
-            const product = await ProductModel.findById(cleanProductId);
+            const product = await ProductModel.findById(productId);
 
             if (!product) {
                 throw new ErrorManager("Producto no encontrado", 404);
             }
 
+            // Busca si el producto ya existe en el carrito
             const productIndex = cart.products.findIndex(
-                (item) => item.product.toString() === cleanProductId,
+                (item) => item.product.toString() === productId,
             );
 
             if (productIndex >= 0) {
-                cart.products[productIndex].quantity++;
+                // Si el producto ya está en el carrito, establece la cantidad especificada
+                cart.products[productIndex].quantity = quantity;
             } else {
-                cart.products.push({ product: cleanProductId, quantity: 1 });
+                // Si no existe, lo agrega con la cantidad especificada
+                cart.products.push({ product: productId, quantity });
             }
 
+            // Guarda el carrito actualizado
             await cart.save();
             return cart;
         } catch (error) {
-            console.log("Error al agregar producto al carrito:", error);
-            throw new ErrorManager("Error al agregar producto al carrito", 500);
+            console.log("Error al modificar el carrito:", error);
+            throw new ErrorManager("Error al modificar el carrito", 500);
         }
     }
 
-    async deleteOneProduct(id, productId) {
+    async deleteOneProduct(cartId, productId) {
         try {
-            const cart = await this.#findOneById(id);
-            const productIndex = cart.products.findIndex((item) => item.product._id.toString() === productId);
+            // Elimina los saltos de línea u otros caracteres adicionales del ID
+            const cleanProductId = productId.trim(); // Elimina espacios u otros caracteres no deseados
 
-            if (productIndex >= 1) {
-                cart.products[productIndex].quantity--;
+            // Verifica que ambos IDs sean válidos
+            if (!this.isValidId(cartId) || !this.isValidId(cleanProductId)) {
+                throw new ErrorManager("ID inválido", 400);
+            }
+
+            // Buscar el carrito por su ID
+            const cart = await this.#findOneById(cartId);
+
+            // Buscar el índice del producto en el carrito
+            const productIndex = cart.products.findIndex((item) => item.product._id.toString() === cleanProductId);
+
+            if (productIndex === -1) {
+                throw new ErrorManager("Producto no encontrado en el carrito", 404);
+            }
+
+            // Decrementar la cantidad o eliminar el producto si la cantidad llega a 0
+            if (cart.products[productIndex].quantity > 1) {
+                cart.products[productIndex].quantity--; // Decrementa la cantidad si es mayor a 1
             } else {
-                cart.products.push({ product: productId, quantity: -1 });
+                cart.products.splice(productIndex, 1); // Elimina el producto si la cantidad es 0
             }
 
             await cart.save();
 
             return cart;
         } catch (error) {
-            throw new ErrorManager(error.message, error.code);
+            console.log("Error al eliminar producto del carrito:", error);
+            throw new ErrorManager("Error al eliminar producto del carrito", 500);
         }
     }
+
+    async deleteAllProducts(cartId) {
+        try {
+            // Elimina los saltos de línea u otros caracteres adicionales del ID
+            const cleanCartId = cartId.trim(); // Elimina espacios u otros caracteres no deseados
+
+            // Verifica que el cartId sea válido
+            if (!this.isValidId(cleanCartId)) {
+                throw new ErrorManager("ID de carrito inválido", 400);
+            }
+
+            // Buscar el carrito por su ID
+            const cart = await this.#findOneById(cleanCartId);
+
+            // Si el carrito no tiene productos, lanzamos un error
+            if (cart.products.length === 0) {
+                throw new ErrorManager("El carrito está vacío", 400);
+            }
+
+            // Limpiar todos los productos del carrito
+            cart.products = []; // Elimina todos los productos
+
+            // Guardar los cambios en el carrito
+            await cart.save();
+
+            return cart;
+        } catch (error) {
+            console.log("Error al eliminar todos los productos del carrito:", error);
+            throw new ErrorManager("Error al eliminar todos los productos del carrito", 500);
+        }
+    }
+
 }

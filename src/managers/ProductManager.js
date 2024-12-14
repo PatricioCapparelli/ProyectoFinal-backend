@@ -36,30 +36,26 @@ export default class ProductManager {
         try {
             const $and = [];
 
-            // Filtro por título (si se pasa)
             if (params?.title) $and.push({ title: { $regex: params.title, $options: "i" } });
 
-            // Filtro por categoría (si se pasa)
             if (params?.category) $and.push({ category: { $regex: params.category, $options: "i" } });
 
-            // Filtro por disponibilidad (si se pasa)
             if (params?.status) $and.push({ status: convertToBoolean(params.status) });
 
-            // Filtro combinado
+            if (params?.available) $and.push({ available: convertToBoolean(params.available) });
+
             const filters = $and.length > 0 ? { $and } : {};
 
-            // Ordenamiento por precio: ascendente o descendente
             const sort = {
                 asc: { price: 1 },
                 desc: { price: -1 },
             };
 
-            // Opciones de paginación y ordenamiento
             const paginationOptions = {
                 limit: params?.limit || 10,
                 page: params?.page || 1,
-                sort: sort[params?.sort] ?? {}, // Si no hay orden, no aplica ningún sort
-                lean: true, // Para obtener resultados más rápidos en formato "lean"
+                sort: sort[params?.sort] ?? {},
+                lean: true,
             };
 
             return await this.#productModel.paginate(filters, paginationOptions);
@@ -72,14 +68,14 @@ export default class ProductManager {
         try {
             const product = await this.#productModel.create({
                 ...data,
+                available: convertToBoolean(data.available),
                 status: convertToBoolean(data.status),
             });
 
             return product;
         } catch (error) {
             throw ErrorManager.handleError(error);
-        }
-    }
+        }}
 
     async updateOneById(id, data) {
         try {
@@ -88,6 +84,7 @@ export default class ProductManager {
                 ...product,
                 ...data,
                 status: data.status ? convertToBoolean(data.status) : product.status,
+                available: data.available ? convertToBoolean(data.available) : product.available,
             };
 
             product.set(newValues);

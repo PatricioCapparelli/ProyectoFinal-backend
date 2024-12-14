@@ -31,7 +31,16 @@ const productSchema = new Schema({
     },
     category: {
         type: String,
+        enum: {
+            values: [ "masculino", "femenino", "unisex" ],
+            message: "La categoría debe ser 'masculino', 'femenino' o 'unisex'",
+        },
+        required: [ true, "La categoría es obligatoria" ],
         trim: true,
+    },
+    available: {
+        type: Boolean,
+        required: [ true, "La disponibilidad es obligatoria" ],
     },
 }, {
     timestamps: true,
