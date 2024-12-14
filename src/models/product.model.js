@@ -42,6 +42,10 @@ const productSchema = new Schema({
         type: Boolean,
         required: [ true, "La disponibilidad es obligatoria" ],
     },
+    description: {
+        type: String,
+        trim: true,
+    },
 }, {
     timestamps: true,
     versionKey: false,

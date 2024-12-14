@@ -13,7 +13,17 @@ socket.on("products-list", (data) => {
     productsList.innerText = "";
 
     products.forEach((product) => {
-        productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title} - Precio: $${product.price} - Stock: ${product.stock}</li> - Disponibilidad: ${product.status}`;
+        productsList.innerHTML += `
+            <li>
+                Id: ${product.id}
+                - Nombre: ${product.title}
+                - Precio: $${product.price}
+                - Estado: ${product.status}
+                - Stock: ${product.stock}
+                - Categoria: ${product.category}
+                - Disponibilidad: ${product.available}
+            </li>
+        `;
     });
 });
 

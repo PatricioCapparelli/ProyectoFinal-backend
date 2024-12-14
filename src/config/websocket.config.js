@@ -23,6 +23,25 @@ export const config = (httpServer) => {
             }
         });
 
+        // Servidor - manejo del evento 'view-product-details'
+        socket.on("view-product-details", async (data) => {
+            console.log("Recibido ID del producto:", data.id); // Verifica el ID del producto recibido
+
+            try {
+                const product = await productManager.getOneById(data.id); // Obtén el producto por ID
+                if (product) {
+                    console.log("Producto encontrado:", product);
+                    socket.emit("product-details", product );
+                    console.log( product, "enviado");
+                } else {
+                    socket.emit("error-message", { message: "Producto no encontrado" });
+                }
+            } catch (error) {
+                console.error("Error al recuperar el producto:", error);
+                socket.emit("error-message", { message: error.message });
+            }
+        });
+
         socket.on("delete-product", async (data) => {
             try {
                 await productManager.deleteOneById(Number(data.id));
