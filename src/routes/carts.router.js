@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 });
 
 // Endpoint para incrementar en una unidad o agregar un producto específico en un carrito por su ID
-router.post('/:cid/products/:pid', async (req, res) => {
+router.post("/:cid/products/:pid", async (req, res) => {
     const { cid, pid } = req.params;
 
     try {
@@ -101,7 +101,6 @@ router.delete("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Endpoint para eliminar todos los productos de un carrito
 router.delete("/:cid/products", async (req, res) => {
     try {
         const { cid } = req.params; // Obtener el cartId de los parámetros

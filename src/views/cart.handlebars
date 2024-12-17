@@ -1,18 +1,18 @@
 <body>
-    <h1>Carrito de Compra - ID: {{cart._id}}</h1>
+    <div class="content-home">
+        <div class="container">
+            <header>
+                <h1>Home - Carrito</h1>
+            </header>
 
-    {{#if cart.products.length}}
-        <ul>
-            {{#each cart.products}}
-                <li>
-                    Producto: {{product.title}} -
-                    Precio: ${{product.price}} -
-                    Cantidad: {{quantity}}
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        <p>No hay productos en este carrito.</p>
-    {{/if}}
+            <div id="cart-products-list">
+            </div>
+
+
+        </div>
+    </div>
 
 </body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/api/public/js/carts.js"></script>

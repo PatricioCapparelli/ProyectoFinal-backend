@@ -38,20 +38,22 @@ router.get("/api/products/view/:id", async (req, res) => {
     }
 });
 
+// Ruta para obtener el carrito por su ID
 router.get("/api/carts/view/:id", async (req, res) => {
     const cartId = req.params.id;
     try {
         const cart = await cartManager.getOneById(cartId);
-        console.log(cart);
+        console.log("Carrito obtenido:", cart);
 
         const cartData = {
             _id: cart._id.toString(),
             products: cart.products,
         };
-        res.render("cart", { cartData });
+
+        res.json({ payload: cartData });
     } catch (error) {
-        console.error("Error al obtener los carritos:", error);
-        res.status(500).json({ message: "Error al obtener los carritos" });
+        console.error("Error al obtener el carrito:", error);
+        res.status(500).json({ message: "Error al obtener el carrito" });
     }
 });
 
