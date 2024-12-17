@@ -80,7 +80,15 @@ body, html {
 
 .products-form__main-fot{
     display: flex;
+    flex-direction: column;
     gap: 3px;
+}
+
+.products-form__main-fot-two{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 5px;
 }
 
 .products-form__main-fot input{

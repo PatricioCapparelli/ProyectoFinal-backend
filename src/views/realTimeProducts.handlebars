@@ -7,7 +7,7 @@
     <main class="container-list">
         <section class="section product">
             <div class="section-body">
-                <h2>Productos</h2>
+                <h2>Crea tu producto</h2>
                 <div>
                     <ul id="products-list"></ul>
                 </div>
@@ -21,25 +21,28 @@
             <div class="products-form__main">
                 <input id="name-product" type="text" name="title" placeholder="Ingresa el nombre">
 
-                <!-- Campo de estado -->
+
                 <div class="products-form__box">
                     <p>¿Está activo?</p>
                     <input class="products-form__box-check" type="checkbox" name="status">
-                    <!-- Campo oculto para enviar un valor false si no está marcado -->
                     <input type="hidden" name="status" value="false">
                 </div>
 
                 <div class="products-form__main-fot">
-                    <input type="number" name="price" placeholder="Precio">
-                    <input type="number" name="stock" placeholder="Stock">
-                    <input type="text" name="category" placeholder="Categoría">
+                    <div class="products-form__main-fot-first">
+                        <input type="number" name="price" placeholder="Precio">
+                        <input type="number" name="stock" placeholder="Stock">
+                        <input type="text" name="category" placeholder="Categoría">
+                    </div>
+                    <div class="products-form__main-fot-two">
+                        <p>Añadir descripcion</p>
+                        <textarea name="description" rows="4" cols="50"></textarea>
+                    </div>
                 </div>
 
-                <!-- Campo de disponibilidad con hidden -->
                 <div class="products-form__box">
                     <p>¿Está disponible?</p>
                     <input class="products-form__box-check" type="checkbox" name="available" value="true">
-                    <!-- Campo oculto para enviar un valor false si no está marcado -->
                     <input type="hidden" name="available" value="false">
                 </div>
             </div>

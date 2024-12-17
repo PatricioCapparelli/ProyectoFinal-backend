@@ -3,6 +3,7 @@ import { mongoose, Types } from "mongoose";
 import ErrorManager from "./ErrorManager.js";
 import CartModel from "../models/cart.model.js";
 import ProductModel from "../models/product.model.js";
+import { isValidId } from '../config/mongoose.config.js';
 
 export default class CartManager {
     #cartModel;
@@ -107,43 +108,53 @@ export default class CartManager {
     }
 
     isValidId(id) {
-        return mongoose.Types.ObjectId.isValid(id);
+        console.log("Verificando ID:", id); // Mostramos el ID que estamos recibiendo
+        return Types.ObjectId.isValid(id);  // Verificamos si es un ObjectId válido
     }
 
-    async addOneProduct(cartId, productId, quantity) {
+    async addOneProduct(cartId, productId) {
         try {
-            // Verifica que los IDs sean válidos
-            if (!this.isValidId(cartId) || !this.isValidId(productId)) {
+            // Elimina los saltos de línea u otros caracteres adicionales del ID
+            const cleanCartId = String(cartId).trim();  // Asegura que sea una cadena y elimina espacios
+            const cleanProductId = String(productId).trim();  // Asegura que sea una cadena y elimina espacios
+    
+            console.log("Verificando ID del carrito:", cleanCartId);  // Muestra el ID del carrito
+            console.log("Verificando ID del producto:", cleanProductId);  // Muestra el ID del producto
+    
+            // Verifica que ambos IDs sean válidos
+            if (!this.isValidId(cleanCartId) || !this.isValidId(cleanProductId)) {
                 throw new ErrorManager("ID inválido", 400);
             }
-
-            // Busca el carrito y el producto
-            const cart = await this.#cartModel.findById(cartId);
-            const product = await ProductModel.findById(productId);
-
+    
+            // Busca el carrito por su ID
+            const cart = await CartModel.findById(cleanCartId);
+            if (!cart) {
+                throw new ErrorManager("Carrito no encontrado", 404);
+            }
+    
+            // Busca el producto por su ID
+            const product = await ProductModel.findById(cleanProductId);
             if (!product) {
                 throw new ErrorManager("Producto no encontrado", 404);
             }
-
-            // Busca si el producto ya existe en el carrito
-            const productIndex = cart.products.findIndex(
-                (item) => item.product.toString() === productId,
-            );
-
-            if (productIndex >= 0) {
-                // Si el producto ya está en el carrito, establece la cantidad especificada
-                cart.products[productIndex].quantity = quantity;
+    
+            // Buscar si el producto ya está en el carrito
+            const existingProduct = cart.products.find(p => p.product.toString() === cleanProductId);
+            if (existingProduct) {
+                // Si ya existe, incrementar la cantidad
+                existingProduct.quantity += 1;
             } else {
-                // Si no existe, lo agrega con la cantidad especificada
-                cart.products.push({ product: productId, quantity });
+                // Si no existe, agregar el producto
+                cart.products.push({ product: cleanProductId, quantity: 1 });
             }
-
-            // Guarda el carrito actualizado
+    
+            // Guardar el carrito actualizado
             await cart.save();
+    
             return cart;
         } catch (error) {
-            console.log("Error al modificar el carrito:", error);
-            throw new ErrorManager("Error al modificar el carrito", 500);
+            console.error("Error al agregar producto al carrito:", error);
+            throw new ErrorManager('Error al modificar el carrito', error);
         }
     }
 

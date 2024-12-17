@@ -1,31 +1,10 @@
 const socket = io();
 
-const productsList = document.getElementById("products-list");
 const productsForm = document.getElementById("products-form");
 const productId = document.getElementById("input-product-id");
 const btnDeleteProduct = document.getElementById("btn-delete-product");
 const errorMessage = document.getElementById("error-message");
 const errorMessageContainer = document.getElementById("error-message-container");
-
-socket.on("products-list", (data) => {
-    const products = data.products || [];
-
-    productsList.innerText = "";
-
-    products.forEach((product) => {
-        productsList.innerHTML += `
-            <li>
-                Id: ${product.id}
-                - Nombre: ${product.title}
-                - Precio: $${product.price}
-                - Estado: ${product.status}
-                - Stock: ${product.stock}
-                - Categoria: ${product.category}
-                - Disponibilidad: ${product.available}
-            </li>
-        `;
-    });
-});
 
 productsForm.addEventListener("submit", (e) => {
     insertProduct(e);
@@ -71,6 +50,7 @@ const insertProduct = (e) => {
         price: formdata.get("price"),
         stock: formdata.get("stock"),
         category: formdata.get("category"),
+        description: formdata.get("description"),
         available: formdata.get("available") || "off",
     });
 };

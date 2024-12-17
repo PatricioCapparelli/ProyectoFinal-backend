@@ -25,20 +25,19 @@ export const config = (httpServer) => {
 
         // Servidor - manejo del evento 'view-product-details'
         socket.on("view-product-details", async (data) => {
-            console.log("Recibido ID del producto:", data.id); // Verifica el ID del producto recibido
+            console.log("Recibiendo solicitud de detalles para el producto con ID:", data.id);
 
-            try {
-                const product = await productManager.getOneById(data.id); // Obtén el producto por ID
-                if (product) {
-                    console.log("Producto encontrado:", product);
-                    socket.emit("product-details", product );
-                    console.log( product, "enviado");
-                } else {
-                    socket.emit("error-message", { message: "Producto no encontrado" });
-                }
-            } catch (error) {
-                console.error("Error al recuperar el producto:", error);
-                socket.emit("error-message", { message: error.message });
+            // Obtener el producto del servidor
+            const product = await productManager.getOneById(data.id);
+
+            if (product) {
+                console.log("Producto encontrado:", product);
+
+                socket.emit("product-details", product);
+                console.log("Detalles del producto emitidos al cliente.");
+            } else {
+                console.log("Producto no encontrado.");
+                socket.emit("error-message", { message: "Producto no encontrado" });
             }
         });
 

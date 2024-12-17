@@ -25,10 +25,6 @@ const productSchema = new Schema({
         required: [ true, "El precio es obligatorio" ],
         min: [ 0, "El precio debe ser un valor positivo" ],
     },
-    thumbnail: {
-        type: String,
-        trim: true,
-    },
     category: {
         type: String,
         enum: {

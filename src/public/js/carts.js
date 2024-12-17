@@ -5,7 +5,7 @@ const btnRefresh = document.getElementById("btn-refresh-products");
 
 if (productsList) {
     const loadProductsList = async () => {
-        const response = await fetch("/api/products", { method: "GET" });
+        const response = await fetch("/api/carts/:id", { method: "GET" });
         const data = await response.json();
         const products = data.payload.docs ?? [];
 
@@ -47,12 +47,4 @@ if (productsList) {
     };
 
     loadProductsList();
-}
-
-// Solo agregamos el eventListener al botón si realmente existe en la página
-if (btnRefresh) {
-    btnRefresh.addEventListener("click", () => {
-        loadProductsList();
-        console.log("¡Lista recargada!");
-    });
 }

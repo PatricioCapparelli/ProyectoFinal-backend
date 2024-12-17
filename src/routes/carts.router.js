@@ -37,15 +37,16 @@ router.post("/", async (req, res) => {
 });
 
 // Endpoint para incrementar en una unidad o agregar un producto específico en un carrito por su ID
-router.post("/:cid/products/:pid", async (req, res) => {
+router.post('/:cid/products/:pid', async (req, res) => {
+    const { cid, pid } = req.params;
+
     try {
-        const { cid, pid } = req.params;
-        console.log("Carrito ID:", cid, "Producto ID:", pid); // Verificar los parámetros
-        const cart = await cartManager.addOneProduct(cid, pid);
-        res.status(200).json({ status: "success", payload: cart });
+
+        const updatedCart = await cartManager.addOneProduct(cid, pid);
+        return res.status(200).json(updatedCart);
     } catch (error) {
-        console.error(error); // Verificar el error en caso de fallo
-        res.status(error.code || 500).json({ status: "error", message: error.message });
+        console.error("Error al agregar producto al carrito:", error);
+        return res.status(500).json({ status: "error", message: "Error al modificar el carrito" });
     }
 });
 
