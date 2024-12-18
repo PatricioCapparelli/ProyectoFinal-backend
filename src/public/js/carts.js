@@ -1,50 +1,69 @@
-const socket = io(); // Establecemos la conexión con el servidor WebSocket
+window.onload = () => {
+    const pathArray = window.location.pathname.split("/"); // Esto divide la URL en partes
+    const cartId = pathArray[pathArray.length - 1]; // El cartId es la última parte de la ruta
 
-        const cartProductsList = document.getElementById("cart-products-list");
-        const refreshButton = document.getElementById("refresh-cart");
+    console.log("Cart ID obtenido desde la URL:", cartId);
 
-        // Función para cargar los productos del carrito
-        const loadCartProducts = () => {
-            socket.emit("get-cart-products", { cartId: "675ce763afad2b5435fcac05" }); // Asegúrate de pasar el ID correcto del carrito
-        };
-
-        // Escuchar el evento 'cart-products-list' del servidor para mostrar los productos en el carrito
-        socket.on("get-cart-products", async (data) => {
-            console.log("Evento recibido para obtener productos del carrito con ID:", data.cartId);
-        
-            try {
-                const cart = await cartManager.getOneById(data.cartId);
-                if (!cart) {
-                    socket.emit("error-message", { message: "Carrito no encontrado" });
-                    console.log("Carrito no encontrado");
-                    return;
-                }
-        
-                console.log("Productos del carrito:", cart.products);
-        
-                if (cart.products && cart.products.length > 0) {
-                    socket.emit("cart-products-list", { products: cart.products });
-                    console.log("Productos enviados al cliente:", cart.products);
-                } else {
-                    console.log("No hay productos en el carrito.");
-                }
-            } catch (error) {
-                console.log("Error en el servidor:", error.message);
-                socket.emit("error-message", { message: error.message });
+    fetch(`/api/carts/${cartId}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Error al obtener los datos del carrito');
             }
-        });
-        
+            return response.json(); // Convertimos la respuesta en formato JSON
+        })
+        .then((data) => {
+            // Mostrar la respuesta completa para depuración
+            console.log("Respuesta de la API:", data);
 
-        // Escuchar evento de error
-        socket.on("error-message", (data) => {
-            console.error("Error:", data.message);
-            alert(data.message);
+            // Verificamos si la respuesta es exitosa y tiene la estructura esperada
+            if (data.status === 'success' && data.payload && data.payload.products) {
+                const cartData = data.payload.products; // Accedemos a los productos dentro de "products"
+                console.log("Detalles del carrito:", cartData); // Ver los datos en la consola
+                renderCartProducts(cartData); // Llamamos a la función para renderizar los productos
+            } else {
+                console.error("Error al obtener los productos del carrito. Datos inesperados:", data);
+            }
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+};
+
+function renderCartProducts(cartData) {
+    const cartProductsContainer = document.querySelector(".cart-products-container");
+
+    // Verificamos si tenemos productos en el carrito
+    if (cartData && cartData.length > 0) {
+        let productsHTML = '';
+
+        // Recorremos los productos y generamos el HTML
+        cartData.forEach(item => {
+            const product = item.product;  // Accedemos a la propiedad "product"
+            const quantity = item.quantity;  // Accedemos a la cantidad del producto
+
+            // Agregamos el HTML para cada producto
+            productsHTML += `
+                <div class="product">
+                    <h3>${product.title}</h3>
+                    <p><strong>ID Producto:</strong> ${product._id}</p>
+                    <p><strong>Precio:</strong> $${product.price}</p>
+                    <p><strong>Cantidad:</strong> ${quantity}</p>
+                    <p><strong>Stock disponible:</strong> ${product.stock}</p>
+                    <p><strong>Categoría:</strong> ${product.category || "No disponible"}</p>
+                    <p><strong>Disponibilidad:</strong> ${product.status ? "Disponible" : 'No disponible'}</p>
+                </div>
+            `;
         });
 
-        // Cuando el cliente hace click en "Actualizar carrito"
-        if (refreshButton) {
-            refreshButton.addEventListener("click", loadCartProducts);
+        // Insertamos los productos generados en el contenedor de la plantilla
+        if (cartProductsContainer) {
+            cartProductsContainer.innerHTML = productsHTML;
         }
 
-        // Cargar los productos cuando se carga la página
-        loadCartProducts();
+    } else {
+        // Si no hay productos en el carrito, mostramos un mensaje
+        if (cartProductsContainer) {
+            cartProductsContainer.innerHTML = "<p>No hay productos en tu carrito.</p>";
+        }
+    }
+}

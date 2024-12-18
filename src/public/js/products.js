@@ -2,6 +2,7 @@ const socket = io();
 
 const productsList = document.getElementById("products-list");
 const btnRefresh = document.getElementById("btn-refresh-products");
+const cartIdInput = document.getElementById("cartIdInput");
 
 if (productsList) {
     const loadProductsList = async () => {
@@ -56,3 +57,16 @@ if (btnRefresh) {
         console.log("¡Lista recargada!");
     });
 }
+
+cartIdInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        const cartId = cartIdInput.value.trim();
+
+        if (cartId) {
+            // Redirigir a la nueva vista con el cartId como parámetro en la URL
+            window.location.href = `/api/carts/view/${cartId}`; // Cambiar la ruta de acuerdo con tu estructura
+        } else {
+            alert("Por favor ingresa un ID de carrito.");
+        }
+    }
+});

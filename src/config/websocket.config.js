@@ -41,26 +41,6 @@ export const config = (httpServer) => {
             }
         });
 
-        socket.on("get-cart-products", async (data) => {
-            try {
-                // Obtener el carrito por ID
-                const cart = await cartManager.getOneById(data.cartId);
-                
-                if (!cart) {
-                    socket.emit("error-message", { message: "Carrito no encontrado" });
-                    return;
-                }
-        
-                // Emitir los productos del carrito
-                socket.emit("cart-products-list", { products: cart.products });
-                console.log("Productos enviados:", cart.products);
-                
-            } catch (error) {
-                // Enviar un mensaje de error si algo sale mal
-                socket.emit("error-message", { message: error.message });
-            }
-        });        
-
         socket.on("delete-product", async (data) => {
             try {
                 await productManager.deleteOneById(Number(data.id));

@@ -38,19 +38,21 @@ router.get("/api/products/view/:id", async (req, res) => {
     }
 });
 
-// Ruta para obtener el carrito por su ID
+// Ruta para obtener los productos del carrito
 router.get("/api/carts/view/:id", async (req, res) => {
     const cartId = req.params.id;
     try {
         const cart = await cartManager.getOneById(cartId);
         console.log("Carrito obtenido:", cart);
 
+        // Datos del carrito a renderizar
         const cartData = {
             _id: cart._id.toString(),
             products: cart.products,
         };
 
-        res.json({ payload: cartData });
+        // Enviar los datos del carrito como JSON
+        res.render("cart", { cartData });
     } catch (error) {
         console.error("Error al obtener el carrito:", error);
         res.status(500).json({ message: "Error al obtener el carrito" });
