@@ -1,7 +1,9 @@
 import { Server } from "socket.io";
 import ProductManager from "../managers/ProductManager.js";
+import CartManager from "../managers/CartManager.js";
 
 const productManager = new ProductManager();
+const cartManager = new CartManager();
 
 export const config = (httpServer) => {
 
@@ -49,6 +51,30 @@ export const config = (httpServer) => {
             } catch (error) {
                 socketServer.emit("error-message", { message: error.message });
 
+            }
+        });
+
+        socket.on('add-to-cart', async ({ cartId, productId }) => {
+            try {
+                // Verificar que los IDs no sean nulos
+                if (!cartId || !productId) {
+                    throw new Error('Cart ID o Product ID no válidos');
+                }
+    
+                // Aquí llama a tu método de agregar producto al carrito (que probablemente esté en tu CartManager)
+                const updatedCart = await cartManager.addOneProduct(cartId, productId);
+    
+                // Emitir la respuesta al cliente
+                socket.emit('product-added-to-cart', {
+                    status: 'success',
+                    cart: updatedCart
+                });
+            } catch (error) {
+                console.error('Error al agregar al carrito:', error);
+                socket.emit('product-added-to-cart', {
+                    status: 'error',
+                    message: error.message || 'Hubo un problema al agregar el producto al carrito'
+                });
             }
         });
 

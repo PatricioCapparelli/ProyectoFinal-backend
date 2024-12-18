@@ -250,3 +250,7 @@ input{
 .products__delete__input {
     width: 100%;
 }
+
+.p-add-to-cart{
+    cursor: pointer;
+}
