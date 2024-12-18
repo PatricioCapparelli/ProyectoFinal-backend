@@ -18,9 +18,9 @@ const loadProductsList = async () => {
                 Id: ${product.id}
                 - Nombre: ${product.title}
                 - Precio: $${product.price}
-                <a class="a-redirect" data-id="${product.id}">Ver detalles</a>
-                <a class="p-add-to-cart" data-id="${product.id}">Agregar a carrito</a>
-                <a class="p-delete-product" data-id="${product.id}">Eliminar producto</a>
+                <a class="a-redirect" data-id="${product.id}">ℹ️</a>
+                <a class="p-add-to-cart" data-id="${product.id}">➕</a>
+                <a class="p-delete-product" data-id="${product.id}">❌</a>
             </li>
         `;
     });
@@ -51,27 +51,45 @@ const loadProductsList = async () => {
     addToCartButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
             const productId = e.target.getAttribute("data-id");
-            const cartId = "675ce763afad2b5435fcac05";  // Aquí puedes ajustar a un carrito dinámico si es necesario
+            const cartId = "675ce763afad2b5435fcac05";
 
             if (!productId || !cartId) {
                 alert("Producto o carrito no válido");
                 return;
             }
 
-            const productData = { productId };
-
             console.log("Emitiendo al servidor para agregar al carrito: ", { cartId, productId });
 
             // Emisión del evento al servidor para agregar al carrito
             socket.emit("add-to-cart", { cartId, productId });
+            alert("añadido al carrito 675ce763afad2b5435fcac05 exitosamente!");
+        });
+    });
+
+    const deleteProductButtons = document.querySelectorAll(".p-delete-product");
+    deleteProductButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            const productId = e.target.getAttribute("data-id");
+
+            console.log("Verificando ID de producto a eliminar:", productId);
+
+            // Verificar que el ID sea un string válido
+            if (!productId || productId.trim() === "") {
+                alert("ID de producto no válido");
+                return;
+            }
+
+            // Emitir evento para eliminar el producto
+            socket.emit("delete-product-id", { productId });
+
+            // Confirmación de eliminación
+            alert("Producto eliminado exitosamente!");
         });
     });
 };
 
-// Cargar productos al cargar la página
 loadProductsList();
 
-// Evento de refrescar la lista de productos
 if (btnRefresh) {
     btnRefresh.addEventListener("click", () => {
         loadProductsList();
@@ -79,14 +97,12 @@ if (btnRefresh) {
     });
 }
 
-// Manejo de input para redirigir a la vista del carrito por ID
-cartIdInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
+cartIdInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
         const cartId = cartIdInput.value.trim();
 
         if (cartId) {
-            // Redirigir a la nueva vista con el cartId como parámetro en la URL
-            window.location.href = `/api/carts/view/${cartId}`;  // Cambia la ruta según la estructura de tu aplicación
+            window.location.href = `/api/carts/view/${cartId}`;
         } else {
             alert("Por favor ingresa un ID de carrito.");
         }

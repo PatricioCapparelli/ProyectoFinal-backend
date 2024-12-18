@@ -54,27 +54,49 @@ export const config = (httpServer) => {
             }
         });
 
-        socket.on('add-to-cart', async ({ cartId, productId }) => {
+        socket.on("add-to-cart", async ({ cartId, productId }) => {
             try {
                 // Verificar que los IDs no sean nulos
                 if (!cartId || !productId) {
-                    throw new Error('Cart ID o Product ID no válidos');
+                    throw new Error("Cart ID o Product ID no válidos");
                 }
-    
+
                 // Aquí llama a tu método de agregar producto al carrito (que probablemente esté en tu CartManager)
                 const updatedCart = await cartManager.addOneProduct(cartId, productId);
-    
+
                 // Emitir la respuesta al cliente
-                socket.emit('product-added-to-cart', {
-                    status: 'success',
-                    cart: updatedCart
+                socket.emit("product-added-to-cart", {
+                    status: "success",
+                    cart: updatedCart,
                 });
             } catch (error) {
-                console.error('Error al agregar al carrito:', error);
-                socket.emit('product-added-to-cart', {
-                    status: 'error',
-                    message: error.message || 'Hubo un problema al agregar el producto al carrito'
+                console.error("Error al agregar al carrito:", error);
+                socket.emit("product-added-to-cart", {
+                    status: "error",
+                    message: error.message || "Hubo un problema al agregar el producto al carrito",
                 });
+            }
+        });
+
+        socket.on("delete-product-id", async (data) => {
+            try {
+                const productId = data.productId;
+
+                // Verificar si el productId es válido
+                if (!productId) {
+                    throw new Error("ID del producto no válido");
+                }
+
+                console.log("ID recibido para eliminar el producto:", productId);
+
+                // Proceder con la eliminación del producto
+                await productManager.deleteOneById(productId);
+
+                // Emitir la lista actualizada de productos
+                socketServer.emit("products-list", { products: await productManager.getAll() });
+
+            } catch (error) {
+                socketServer.emit("error-message", { message: error.message });
             }
         });
 
