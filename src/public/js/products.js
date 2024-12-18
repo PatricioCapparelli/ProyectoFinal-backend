@@ -51,7 +51,7 @@ const loadProductsList = async () => {
     addToCartButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
             const productId = e.target.getAttribute("data-id");
-            const cartId = "675ce763afad2b5435fcac05";
+            const cartId = "675ce705afad2b5435fcac03";
 
             if (!productId || !cartId) {
                 alert("Producto o carrito no válido");
@@ -62,7 +62,7 @@ const loadProductsList = async () => {
 
             // Emisión del evento al servidor para agregar al carrito
             socket.emit("add-to-cart", { cartId, productId });
-            alert("añadido al carrito 675ce763afad2b5435fcac05 exitosamente!");
+            alert("añadido al carrito 675ce705afad2b5435fcac03 exitosamente!");
         });
     });
 
