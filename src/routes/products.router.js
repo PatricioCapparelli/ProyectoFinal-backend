@@ -4,6 +4,7 @@ import ProductManager from "../managers/ProductManager.js";
 const router = Router();
 const productManager = new ProductManager();
 
+// Enpoint para obtener todos los productos
 router.get("/", async (req, res) => {
     try {
         const products = await productManager.getAll(req.query);
@@ -13,6 +14,7 @@ router.get("/", async (req, res) => {
     }
 });
 
+// Enpoint para obtener un producto
 router.get("/:id", async (req, res) => {
     try {
         const product = await productManager.getOneById(req.params.id);
@@ -22,6 +24,7 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+// Enpoint para insertar un producto
 router.post("/", async (req, res) => {
     try {
         const product = await productManager.insertOne(req.body);
@@ -31,6 +34,7 @@ router.post("/", async (req, res) => {
     }
 });
 
+// Enpoint para actualizar un producto
 router.put("/:id", async (req, res) => {
     try {
         const product = await productManager.updateOneById(req.params.id, req.body);
@@ -40,6 +44,7 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+// Enpoint para eliminar un producto
 router.delete("/:id", async (req, res) => {
     try {
         await productManager.deleteOneById(req.params.id);

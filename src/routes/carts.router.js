@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Endpoint para incrementar en una unidad o agregar un producto específico en un carrito por su ID
+// Endpoint para incrementar en una unidad o agregar un producto especifico en un carrito por su ID
 router.post("/:cid/products/:pid", async (req, res) => {
     const { cid, pid } = req.params;
 
@@ -50,18 +50,17 @@ router.post("/:cid/products/:pid", async (req, res) => {
     }
 });
 
+// Enpoint para modificar productos del carrito
 router.put("/:cid", async (req, res) => {
     try {
-        const { cid } = req.params; // Extraemos el cartId desde la URL
-        const { products } = req.body; // Extraemos los productos a modificar desde el cuerpo de la solicitud
+        const { cid } = req.params;
+        const { products } = req.body;
 
         console.log("ID del carrito:", cid);
-        console.log("Productos a modificar:", products); // Verificamos los datos que vamos a modificar
+        console.log("Productos a modificar:", products);
 
-        // Llamamos al método para modificar el carrito, pasándole el cartId y los productos modificados
         const cart = await cartManager.updateCart(cid, products);
 
-        // Respondemos con el carrito actualizado
         res.status(200).json({ status: "success", payload: cart });
     } catch (error) {
         console.error("Error al modificar el carrito:", error);
@@ -69,21 +68,18 @@ router.put("/:cid", async (req, res) => {
     }
 });
 
-// Ruta para agregar un producto a un carrito
+// Endpoint para agregar un producto a un carrito
 router.put("/:cid/products/:pid", async (req, res) => {
     try {
-        const { cid, pid } = req.params; // El cartId y productId vienen de los parámetros de la URL
-        const { quantity } = req.body; // La cantidad del producto viene del cuerpo de la solicitud
+        const { cid, pid } = req.params;
+        const { quantity } = req.body;
 
-        // Verificamos que la cantidad sea válida
         if (quantity <= 0) {
             return res.status(400).json({ status: "error", message: "La cantidad debe ser mayor a 0." });
         }
 
-        // Llamamos a addOneProduct para actualizar la cantidad del producto
         const cart = await cartManager.addOneProduct(cid, pid, quantity);
 
-        // Respondemos con el carrito actualizado
         res.status(200).json({ status: "success", payload: cart });
     } catch (error) {
         console.error("Error al modificar el carrito:", error);
@@ -91,6 +87,7 @@ router.put("/:cid/products/:pid", async (req, res) => {
     }
 });
 
+// Endpoint para eliminar un producto de un carrito
 router.delete("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
@@ -101,11 +98,12 @@ router.delete("/:cid/products/:pid", async (req, res) => {
     }
 });
 
+// Enpoint para eliminar todos los productos de un carrito
 router.delete("/:cid/products", async (req, res) => {
     try {
-        const { cid } = req.params; // Obtener el cartId de los parámetros
-        const cart = await cartManager.deleteAllProducts(cid); // Llamar al método que elimina todos los productos
-        res.status(200).json({ status: "success", payload: cart }); // Responder con el carrito actualizado
+        const { cid } = req.params;
+        const cart = await cartManager.deleteAllProducts(cid);
+        res.status(200).json({ status: "success", payload: cart });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }

@@ -4,13 +4,13 @@ const productsList = document.getElementById("products-list");
 const btnRefresh = document.getElementById("btn-refresh-products");
 const cartIdInput = document.getElementById("cartIdInput");
 
-// Cargar los productos
+// Carga los productos
 const loadProductsList = async () => {
     const response = await fetch("/api/products", { method: "GET" });
     const data = await response.json();
     const products = data.payload.docs ?? [];
 
-    productsList.innerHTML = ""; // Limpiar la lista antes de cargar nuevos productos
+    productsList.innerHTML = "";
 
     products.forEach((product) => {
         productsList.innerHTML += `
@@ -25,28 +25,22 @@ const loadProductsList = async () => {
         `;
     });
 
-    // Agregar evento a los botones "Ver detalles"
     const buttons = document.querySelectorAll(".a-redirect");
     buttons.forEach((button) => {
         button.addEventListener("click", (e) => {
             const productId = e.target.getAttribute("data-id");
 
-            // Emitir evento para obtener los detalles del producto
             socket.emit("view-product-details", { id: productId });
 
-            // Cuando el servidor responde con los detalles del producto
             socket.on("product-details", (data) => {
                 console.log("Detalles del producto:", data);
-                // Guardamos los detalles del producto en localStorage
                 localStorage.setItem("productDetails", JSON.stringify(data));
 
-                // Redirigir a la página de detalles del producto
                 window.location.href = `/api/products/view/${productId}`;
             });
         });
     });
 
-    // Agregar evento al botón "Agregar a carrito"
     const addToCartButtons = document.querySelectorAll(".p-add-to-cart");
     addToCartButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
@@ -60,7 +54,6 @@ const loadProductsList = async () => {
 
             console.log("Emitiendo al servidor para agregar al carrito: ", { cartId, productId });
 
-            // Emisión del evento al servidor para agregar al carrito
             socket.emit("add-to-cart", { cartId, productId });
             alert("añadido al carrito 675ce705afad2b5435fcac03 exitosamente!");
         });
@@ -73,16 +66,13 @@ const loadProductsList = async () => {
 
             console.log("Verificando ID de producto a eliminar:", productId);
 
-            // Verificar que el ID sea un string válido
             if (!productId || productId.trim() === "") {
                 alert("ID de producto no válido");
                 return;
             }
 
-            // Emitir evento para eliminar el producto
             socket.emit("delete-product-id", { productId });
 
-            // Confirmación de eliminación
             alert("Producto eliminado exitosamente!");
         });
     });
