@@ -94,7 +94,13 @@ router.delete("/:cid/products/:pid", async (req, res) => {
         const cart = await cartManager.deleteOneProduct(cid, pid);
         res.status(200).json({ status: "success", payload: cart });
     } catch (error) {
-        res.status(error.code).json({ status: "error", message: error.message });
+        console.error("Error al eliminar producto del carrito:", error);
+        // Verificamos el código y el mensaje del error
+        if (error.code && error.message) {
+            res.status(error.code).json({ status: "error", message: error.message });
+        } else {
+            res.status(500).json({ status: "error", message: "Error interno del servidor" });
+        }
     }
 });
 
