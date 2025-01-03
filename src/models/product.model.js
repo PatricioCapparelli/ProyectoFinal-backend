@@ -42,6 +42,23 @@ const productSchema = new Schema({
         type: String,
         trim: true,
     },
+    code: {
+        type: String,
+        required: [ true, "El código es obligatorio" ],
+        uppercase: true,
+        trim: true,
+        unique: true,
+        validate: {
+            validator: async function (code) {
+                const countDocuments = await this.model("products").countDocuments({
+                    _id: { $ne: this._id },
+                    code, // Atributo de verificación de duplicado
+                });
+                return countDocuments === 0;
+            },
+            message: "El código ya está registrado",
+        },
+    },
 }, {
     timestamps: true,
     versionKey: false,

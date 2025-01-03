@@ -15,7 +15,7 @@ export default class ProductManager {
             throw new ErrorManager("ID inválido", 400);
         }
 
-        const product = await this.#productModel.findById(id);
+        const product = await this.#productModel.findOne({ _id: id });
 
         if (!product) {
             throw new ErrorManager("ID no encontrado", 404);
@@ -26,7 +26,8 @@ export default class ProductManager {
 
     async getOneById(id) {
         try {
-            return await this.#findOneById(id);
+            const productFound = await this.#findOneById(id);
+            return productFound.toObject();
         } catch (error) {
             throw ErrorManager.handleError(error);
         }
@@ -72,7 +73,8 @@ export default class ProductManager {
                 status: convertToBoolean(data.status),
             });
 
-            return product;
+            await product.save();
+            return product.toObject();
         } catch (error) {
             throw ErrorManager.handleError(error);
         }}
@@ -88,9 +90,9 @@ export default class ProductManager {
             };
 
             product.set(newValues);
-            product.save();
+            await product.save();
 
-            return product;
+            return product.toObject();
         } catch (error) {
             throw ErrorManager.handleError(error);
         }
