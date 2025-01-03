@@ -56,15 +56,22 @@ router.put("/:cid", async (req, res) => {
         const { cid } = req.params;
         const { products } = req.body;
 
-        console.log("ID del carrito:", cid);
-        console.log("Productos a modificar:", products);
-
-        const cart = await cartManager.updateCart(cid, products);
+        const cart = await cartManager.updateOneById(cid, products);
 
         res.status(200).json({ status: "success", payload: cart });
     } catch (error) {
         console.error("Error al modificar el carrito:", error);
         res.status(error.code || 500).json({ status: "error", message: error.message });
+    }
+});
+
+// Ruta para actualizar un carrito existente por su ID
+router.put("/:id", async (req, res) => {
+    try {
+        const cart = await cartManager.updateOneById(req.params.id, req.body);
+        res.status(200).json({ status: true, payload: cart });
+    } catch (error) {
+        handleError(res, error.message);
     }
 });
 
@@ -73,43 +80,38 @@ router.put("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const { quantity } = req.body;
-
-        if (quantity <= 0) {
-            return res.status(400).json({ status: "error", message: "La cantidad debe ser mayor a 0." });
-        }
-
-        const cart = await cartManager.addOneProduct(cid, pid, quantity);
-
-        res.status(200).json({ status: "success", payload: cart });
+        const cart = await cartManager.addOneProduct(cid, pid, quantity ?? 1);
+        res.status(200).json({ status: true, payload: cart });
     } catch (error) {
-        console.error("Error al modificar el carrito:", error);
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }
 });
 
-// Endpoint para eliminar un producto de un carrito
+router.delete("/:id", async (req, res) => {
+    try {
+        const cart = await cartManager.deleteOneById(req.params.id);
+        res.status(200).json({ status: true, payload: cart });
+    } catch (error) {
+        res.status(error.code || 500).json({ status: "error", message: error.message });
+    }
+});
+
+// Ruta para decrementar en una unidad o eliminar un producto específico en un carrito por su ID
 router.delete("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const cart = await cartManager.deleteOneProduct(cid, pid);
-        res.status(200).json({ status: "success", payload: cart });
+        const cart = await cartManager.deleteOneProduct(cid, pid, 1);
+        res.status(200).json({ status: true, payload: cart });
     } catch (error) {
-        console.error("Error al eliminar producto del carrito:", error);
-        // Verificamos el código y el mensaje del error
-        if (error.code && error.message) {
-            res.status(error.code).json({ status: "error", message: error.message });
-        } else {
-            res.status(500).json({ status: "error", message: "Error interno del servidor" });
-        }
+        res.status(error.code || 500).json({ status: "error", message: error.message });
     }
 });
 
 // Enpoint para eliminar todos los productos de un carrito
 router.delete("/:cid/products", async (req, res) => {
     try {
-        const { cid } = req.params;
-        const cart = await cartManager.deleteAllProducts(cid);
-        res.status(200).json({ status: "success", payload: cart });
+        const cart = await cartManager.deleteAllProducts(req.params.cid);
+        res.status(200).json({ status: true, payload: cart });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }

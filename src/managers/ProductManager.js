@@ -14,9 +14,7 @@ export default class ProductManager {
         if (!isValidId(id)) {
             throw new ErrorManager("ID inválido", 400);
         }
-
         const product = await this.#productModel.findOne({ _id: id });
-
         if (!product) {
             throw new ErrorManager("ID no encontrado", 404);
         }
@@ -38,13 +36,9 @@ export default class ProductManager {
             const $and = [];
 
             if (params?.title) $and.push({ title: { $regex: params.title, $options: "i" } });
-
             if (params?.category) $and.push({ category: { $regex: params.category, $options: "i" } });
-
             if (params?.status) $and.push({ status: convertToBoolean(params.status) });
-
             if (params?.available) $and.push({ available: convertToBoolean(params.available) });
-
             const filters = $and.length > 0 ? { $and } : {};
 
             const sort = {
