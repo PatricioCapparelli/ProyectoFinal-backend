@@ -1,100 +1,82 @@
 const socket = io();
 
+// Referencias a los elementos del DOM
+const productsTableRows = document.getElementById("products-table-rows");
 const productsForm = document.getElementById("products-form");
-const productId = document.getElementById("input-product-id");
+const inputProductId = document.getElementById("input-product-id");
 const btnDeleteProduct = document.getElementById("btn-delete-product");
-const errorMessage = document.getElementById("error-message");
-const errorMessageContainer = document.getElementById("error-message-container");
 
-productsForm.addEventListener("submit", (e) => {
-    insertProduct(e);
-});
+// Manejo del formulario para insertar un producto
+productsForm.addEventListener("submit", function(event) {
+    event.preventDefault();
 
-productsForm.addEventListener("keyup", (e) => {
-    if(e.key === "enter"){
-        insertProduct(e);
-    }
-});
+    // Obtiene los datos del formulario
+    const form = event.target;
+    const formData = new FormData(form);
 
-productsForm.addEventListener("submit", function() {
-    const statusCheckbox = document.querySelector("input[name='status']");
-    const availableCheckbox = document.querySelector("input[name='available']");
+    // Obtiene el archivo adjunto
+    const file = formData.get("file");
 
-    const statusHiddenInput = document.querySelector("input[name='status'][type='hidden']");
-
-    if (statusCheckbox.checked) {
-        statusHiddenInput.value = "true";
-    } else {
-        statusHiddenInput.value = "false";
-    }
-
-    const availableHiddenInput = document.querySelector("input[name='available'][type='hidden']");
-
-    if (availableCheckbox.checked) {
-        availableHiddenInput.value = "true";
-    } else {
-        availableHiddenInput.value = "false";
-    }
-});
-
-const insertProduct = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formdata = new FormData(form);
-
-    form.reset();
-
-    socket.emit("insert-product", {
-        title: formdata.get("title"),
-        status: formdata.get("status") || "off",
-        price: formdata.get("price"),
-        stock: formdata.get("stock"),
-        category: formdata.get("category"),
-        description: formdata.get("description"),
-        available: formdata.get("available") || "off",
-    });
-};
-
-const deleteId = () => {
-    const id = productId.value;
-    errorMessage.innerText = "";
-
-    if (!id) {
-        errorMessage.innerText = "Ingrese un ID valido.";
-        abrirPopup();
+    // Detiene la ejecución si no proporcionado una imagen
+    if (!file) {
+        console.error("No se ha proporcionado una imagen");
         return;
     }
 
+    // Emisión del evento para insertar el producto
+    socket.emit("insert-product", {
+        title: formData.get("title"),
+        description: formData.get("description"),
+        code: formData.get("code"),
+        price: formData.get("price"),
+        stock: formData.get("stock"),
+        status: formData.get("status"),
+        category: formData.get("category"),
+        availability: Boolean(formData.get("availability")),
+        file: {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            buffer: file,
+        },
+    });
+
+    // Restaura el formulario después de enviar los datos
+    form.reset();
+});
+
+// Manejo del clic en el botón para eliminar un producto
+btnDeleteProduct.addEventListener("click", function() {
+    const id = inputProductId.value.trim();
+
+    // Restaura el valor del input
+    inputProductId.value = "";
+
+    // Detiene la ejecución si no hay ID
+    if (!id) {
+        console.error("Product ID is required");
+        return;
+    }
+
+    // Emisión del evento para eliminar el producto
     socket.emit("delete-product", { id });
-
-    productId.value = "";
-};
-
-btnDeleteProduct.addEventListener("click", () => {
-    deleteId();
 });
 
-productId.addEventListener("keyup", (e) => {
-    if(e.key === "Enter"){
-        deleteId();
-    }
-});
+// Manejo de la lista de productos recibida del servidor
+socket.on("products-list", function(data) {
+    const productsList = data.docs || [];
 
-const abrirPopup = () => {
-    if (errorMessage.innerText.trim() !== "") {
+    // Limpia la tabla de productos
+    productsTableRows.innerHTML = "";
 
-        errorMessageContainer.classList.add("active");
-
-        setTimeout(() => {
-            errorMessageContainer.classList.remove("active");
-        }, 3000);
-    } else {
-
-        errorMessageContainer.classList.remove("active");
-    }
-};
-
-socket.on("error-message", (data) => {
-    errorMessage.innerText = data.message;
-    abrirPopup();
+    // Itera sobre cada producto y crea una fila en la tabla
+    productsList.forEach(function(product) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.title}</td>
+            <td>${product.price}</td>
+        `;
+        productsTableRows.appendChild(tr);
+    });
 });

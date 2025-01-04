@@ -1,20 +1,44 @@
 <div class="content-home">
-    <section class="section">
-        <div class="section-body">
-            <div class="container">
-                <header>
-                    <h1>Home - Carrito</h1>
-                </header>
-                <div class="cart-products-container">
-                </div>
+    <div class="container">
+        <header>
+            <h1>Carrito</h1>
+        </header>
+        <section class="section">
+            <h3>Detalles</h3>
+            <div class="section-body">
+                <main class="container-cart">
+                    <section class="container-cart__details">
+                        <ul>
+                            <li>ID: <b>{{data._id}}</b></li>
+                            <li>Creado: <i>{{data.createdAt}}hs</i></li>
+                            <li>Actualizado: <i>{{data.updatedAt}}hs</i></li>
+                        </ul>
+                    </section>
+
+                    <section class="container-cart__table">
+                        <h3 class="section-title">Productos</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Título</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each data.products}}
+                                <tr>
+                                    <td>{{this.product._id}}</td>
+                                    <td>{{this.product.title}}</td>
+                                    <td class="td-list">{{this.quantity}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <a href="/"><button title="Volver al inicio">↶</button></a>
+                    </section>
+                </main>
             </div>
-        </div>
+    </div>
     </section>
 </div>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/api/public/js/carts.js"></script>
-
-
-
-

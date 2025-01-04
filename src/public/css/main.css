@@ -31,6 +31,28 @@ body, html {
     font-family: -apple-system, sans-serif;
 }
 
+.button-icon {
+    padding: 5px;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.button-icon:hover {
+    background-color: rgba(255, 255, 255, 0.101);
+    border-radius: 3px;
+}
+
+.button-icon img {
+    width: 2rem;
+}
+
+.td-list{
+    display: flex;
+    justify-content: center;
+}
+
 .error-plantilla {
     width: 100%;
     display: grid;
@@ -64,6 +86,39 @@ body, html {
     align-content: start;
     gap: 10px;
     margin-bottom: 10px;
+}
+
+table{
+    width: 100%;
+    padding: 10px 0px;
+}
+
+.section-area{
+    background: var(--border-color);
+    display: flex;
+    border-radius: 12px;
+    padding: 0px 5px;
+    width: 350px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.section-area__order{
+    background: var(--section-color);
+    margin: 16px 0px;
+    display: grid;
+    place-items: center;
+    font-family: system-ui, -apple-system, sans-serif;
+    align-content: start;
+    width: 100%;
+    height: 100%;
+    gap: 15px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 12px;
+    color: white;
+    height: 100%;
 }
 
 .cart-products-container{
@@ -154,27 +209,30 @@ font-size: 14px;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    width: 100%;
     border-radius: 12px;
     position: relative;
     padding: 5px;
     height: 100%;
 }
 
-
-
 .section-body{
     background: var(--section-color);
     border-radius: 12px;
-    padding: 16px;
+    padding: 33px;
     display: flex;
     gap: 20px;
     justify-content: center;
     align-items: center;
     align-content: space-between;
     color: white;
-    width: 100%;
     height: 100%;
+    flex-wrap: wrap;
+}
+
+.section-title{
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
 }
 
 .section-body__main{

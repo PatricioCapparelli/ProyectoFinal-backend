@@ -1,73 +1,85 @@
 <div class="content">
     <div class="container">
-    <header>
-        <h1>Home - Productos en tiempo real</h1>
-    </header>
+        <header>
+            <h1>Home - Productos en tiempo real</h1>
+        </header>
 
-    <main class="container-list">
-        <section class="section product">
-            <div class="section-body">
-                <h2>Crea tu producto</h2>
-                <div>
-                    <ul id="products-list"></ul>
-                </div>
-            </div>
-        </section>
+        <main class="container-list">
+            <main class="container-products">
+                <section class="container-products__table">
+                    <h3>Productos</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-rows"></tbody>
+                    </table>
+                </section>
 
-        <section class="section form">
-    <div class="section-body">
-        <h2>Formulario de producto</h2>
-        <form id="products-form">
-            <div class="products-form__main">
-                <input id="name-product" type="text" name="title" placeholder="Ingresa el nombre">
+                <section class="container-product__form">
+                    <h3>Formulario de Productos</h3>
+                    <form id="products-form">
+                        <div>
+                            <label for="title">Título</label>
+                            <input type="text" name="title" id="title" maxlength="25">
+                        </div>
+                        <div>
+                            <label for="description">Descripción</label>
+                            <textarea name="description" rows="5"></textarea>
+                        </div>
+                        <div>
+                            <label for="code">Código</label>
+                            <input type="text" name="code" id="code">
+                        </div>
+                        <div>
+                            <label for="price">Precio</label>
+                            <input type="number" name="price" id="price">
+                        </div>
+                        <div>
+                            <span><input type="checkbox" name="status">Estado</span>
+                            <span><input type="checkbox" name="availability">Disponibilidad</span>
+                        </div>
+                        <div>
+                            <label for="stock">Stock</label>
+                            <input type="number" name="stock" id="stock">
+                        </div>
+                        <div>
+                            <label for="category">Categoría</label>
+                            <select name="category" id="category">
+                                <option value="FEMENINO">FEMENINO</option>
+                                <option value="MASCULINO">MASCULINO</option>
+                                <option value="UNISEX">UNISEX</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="file">Imagen</label>
+                            <input type="file" name="file" id="file" accept=".png,.jpg">
+                        </div>
 
+                        <input type="submit" value="Guardar" style="width: 100%">
+                    </form>
+                </section>
 
-                <div class="products-form__box">
-                    <p>¿Está activo?</p>
-                    <input class="products-form__box-check" type="checkbox" name="status">
-                    <input type="hidden" name="status" value="false">
-                </div>
-
-                <div class="products-form__main-fot">
-                    <div class="products-form__main-fot-first">
-                        <input type="number" name="price" placeholder="Precio">
-                        <input type="number" name="stock" placeholder="Stock">
-                        <input type="text" name="category" placeholder="Categoría">
+                <section class="container-product__delete">
+                    <h3>Eliminación de Producto</h3>
+                    <div>
+                        <input type="text" id="input-product-id" placeholder="ID del Producto">
+                        <button id="btn-delete-product">Eliminar</button>
                     </div>
-                    <div class="products-form__main-fot-two">
-                        <p>Añadir descripcion</p>
-                        <textarea name="description" rows="4" cols="50"></textarea>
-                    </div>
-                </div>
+                </section>
 
-                <div class="products-form__box">
-                    <p>¿Está disponible?</p>
-                    <input class="products-form__box-check" type="checkbox" name="available" value="true">
-                    <input type="hidden" name="available" value="false">
-                </div>
-            </div>
-            <button class="btn products-form__inp" type="submit" value="Guardar">Guardar</button>
-        </form>
+                <section class="navigation">
+                    <div>
+                        <a href="/"><button>Volver al inicio</button></a>
+                    </div>
+                </section>
+            </main>
+        </main>
     </div>
-</section>
-
-        <section class="section delete">
-            <div class="section-body">
-                <h2>Eliminar Producto</h1>
-                <div class="section-body__main">
-                    <p>Ingrese el Id del producto que desea eliminar.</p>
-                    <input type="number" id="input-product-id">
-                </div>
-                <button class="btn" id="btn-delete-product">Eliminar</button>
-            </div>
-        </section>
-
-        <div id="error-message-container" class="error-message-container">
-            <p id="error-message" class="error-message"></p>
-        </div>
-
-    </main>
-</div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
