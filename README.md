@@ -34,21 +34,23 @@ Este es un proyecto basado en Node.js que utiliza Handlebars como motor de plant
         ├── paths.js
         ├── random.js
         └── uploader.js
-
+```
 ## Requisitos
 - Node.js (versión 14 o superior).
 - MongoDB (local o en la nube).
 
 ## Instalación
 1. Clona este repositorio:
-   ```bash
+```bash
    git clone https://github.com/PatricioCapparelli/ProyectoFinal-backend.git
+```
 
 ## Requerimientos
 
 Para ejecutar el proyecto correctamente, asegúrate de cumplir con los siguientes requisitos de software:
-
-Node.js v18.20.4
-Mongo Shell v2.2.15
-GIT v2.34.1
-IDE - Visual Studio Code v1.92.0
+```
+    - Node.js v18.20.4
+    - Mongo Shell v2.2.15
+    - GIT v2.34.1
+    - IDE - Visual Studio Code v1.92.0
+```
