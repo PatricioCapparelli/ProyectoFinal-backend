@@ -80,3 +80,7 @@ socket.on("products-list", function(data) {
         productsTableRows.appendChild(tr);
     });
 });
+
+refreshProductsList.addEventListener("click", function() {
+    fetch("/real-time/products");
+});

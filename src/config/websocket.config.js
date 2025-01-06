@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
+import paths from "../utils/paths.js";
 import ProductManager from "../managers/ProductManager.js";
+import { generateNameForFile } from "../utils/random.js";
 import { writeFile } from "../utils/fileSystem.js";
 
 const productManager = new ProductManager();

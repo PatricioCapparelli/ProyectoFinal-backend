@@ -9,6 +9,7 @@ const changeEnabledAllIconButtons = (state) => {
 // Función para agregar un producto al carrito
 const addProduct = (cartId, currentProductId) => {
     // Deshabilita los botones ícono para evitar comportamientos inesperados por doble-clic
+    alert("Producto agregado al carrito: " + cartId);
     changeEnabledAllIconButtons(false);
 
     const options = {
@@ -29,6 +30,7 @@ const addProduct = (cartId, currentProductId) => {
 // Función para eliminar un producto del carrito
 const removeProduct = (cartId, currentProductId) => {
     // Deshabilita los botones ícono para evitar comportamientos inesperados por doble-clic
+    alert("Producto eliminado del carrito: " + cartId);
     changeEnabledAllIconButtons(false);
 
     fetch(`/api/carts/${cartId}/products/${currentProductId}`, { method: "DELETE" })
@@ -51,7 +53,7 @@ const idCartInput = document.getElementById("cartIdInput");
 
 idCartInput.addEventListener("keyup", (e) => {
     e.preventDefault();
-    if(e.key === "Enter") {
+    if (e.key === "Enter") {
         const cartId = idCartInput.value;
         window.location.href = `/cart/${cartId}`;
     }

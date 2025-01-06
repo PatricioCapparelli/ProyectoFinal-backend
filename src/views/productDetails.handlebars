@@ -17,13 +17,10 @@
               <li>Categoría: <b>{{data.category}}</b></li>
               <li>Estado: <b>{{#if data.status}}HABILITADO{{else}}INHABILITADO{{/if}}</b></li>
               <li>Disponible: <b>{{#if data.availability}}SI{{else}}NO{{/if}}</b></li>
-              <li>
-                Imagen:
-                <img src="/public/images/{{data.thumbnail}}" alt="Imagen del producto">
-              </li>
               <li>Creado: <i>{{data.createdAt}}hs</i></li>
               <li>Actualizado: <i>{{data.updatedAt}}hs</i></li>
             </ul>
+            <img class="product-img" src="/api/public/images/{{data.thumbnail}}" alt="Imagen del producto">
           </div>
           <a class="btn" href="/">Volver</a>
         </div>
@@ -32,4 +29,3 @@
   </div>
 </div>
 
-<script src="/api/public/js/product.js"></script>

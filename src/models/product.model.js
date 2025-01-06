@@ -27,14 +27,14 @@ const productSchema = new Schema({
     },
     category: {
         type: String,
+        trim: true,
         enum: {
-            values: [ "masculino", "femenino", "unisex" ],
+            values: [ "MASCULINO", "FEMENINO", "UNISEX" ],
             message: "La categoría debe ser 'masculino', 'femenino' o 'unisex'",
         },
         required: [ true, "La categoría es obligatoria" ],
-        trim: true,
     },
-    available: {
+    availability: {
         type: Boolean,
         required: [ true, "La disponibilidad es obligatoria" ],
     },
@@ -87,6 +87,6 @@ productSchema.pre("deleteOne", async function(next) {
 
 productSchema.plugin(paginate);
 
-const ProductModel = model("product", productSchema);
+const ProductModel = model("products", productSchema);
 
 export default ProductModel;

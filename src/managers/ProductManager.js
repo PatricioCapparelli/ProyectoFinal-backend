@@ -2,6 +2,8 @@ import ErrorManager from "./ErrorManager.js";
 import { isValidId } from "../config/mongoose.config.js";
 import ProductModel from "../models/product.model.js";
 import { convertToBoolean } from "../utils/converter.js";
+import { deleteFile } from "../utils/fileSystem.js";
+import paths from "../utils/paths.js";
 
 export default class ProductManager {
     #productModel;
@@ -59,45 +61,62 @@ export default class ProductManager {
         }
     }
 
-    async insertOne(data) {
+    insertOne = async (data, filename) => {
         try {
             const product = await this.#productModel.create({
                 ...data,
-                available: convertToBoolean(data.available),
                 status: convertToBoolean(data.status),
+                availability: convertToBoolean(data.availability),
+                thumbnail: filename ?? null,
             });
 
             await product.save();
             return product.toObject();
         } catch (error) {
-            throw ErrorManager.handleError(error);
-        }}
+            if (filename) await deleteFile(paths.images, filename);
+            throw ErrorManager.handleError(error);}
+    };
 
-    async updateOneById(id, data) {
+    // Actualiza un producto por su ID
+    updateOneById = async (id, data, filename) => {
         try {
-            const product = await this.#findOneById(id);
+            const productFound = await this.#findOneById(id);
+            const currentThumbnail = productFound.thumbnail;
+            const newThumbnail = filename;
+
             const newValues = {
-                ...product,
                 ...data,
-                status: data.status ? convertToBoolean(data.status) : product.status,
-                available: data.available ? convertToBoolean(data.available) : product.available,
+                status: convertToBoolean(data.status),
+                availability: convertToBoolean(data.availability),
+                thumbnail: newThumbnail ?? currentThumbnail,
             };
 
-            product.set(newValues);
-            await product.save();
+            productFound.set(newValues);
+            await productFound.save();
 
-            return product.toObject();
+            if (filename && newThumbnail !== currentThumbnail) {
+                await deleteFile(paths.images, currentThumbnail);
+            }
+
+            return productFound.toObject();
         } catch (error) {
-            throw ErrorManager.handleError(error);
-        }
-    }
+            if (filename) await deleteFile(paths.images, filename);
+            throw ErrorManager.handleError(error);}
+    };
 
-    async deleteOneById(id) {
+    // Elimina un producto por su ID
+    deleteOneById = async (id) => {
         try {
-            const product = await this.#findOneById(id);
-            await product.deleteOne();
+            const productFound = await this.#findOneById(id);
+
+            if (productFound.thumbnail) {
+                await deleteFile(paths.images, productFound.thumbnail);
+            }
+
+            await this.#productModel.deleteOne({ _id: productFound._id });
+            return productFound.toObject();
         } catch (error) {
             throw ErrorManager.handleError(error);
         }
-    }
+    };
 }
