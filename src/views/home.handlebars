@@ -43,28 +43,29 @@
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn" id="btn-refresh-products"><a href="./">Refrescar</a></button>
+                    <a class="btn" href="/" id="btn-refresh-products">Refrescar</a>
+                    <a class="btn" href="/real-time-products">Crear un producto</a>
                 </div>
             </section>
             <div class="section-area">
                 <div class="section-area__order">
-                <span>Ordenamiento</span>
-                <div>
-                    {{#if data.prevPage}}
-                    <a href="/?page={{data.prevPage}}{{data.sort}}"><button class="btn">Anterior</button></a>
-                    {{/if}}
+                    <span>Ordenamiento</span>
+                    <div>
+                        {{#if data.prevPage}}
+                        <a href="/?page={{data.prevPage}}{{data.sort}}"><button class="btn">Anterior</button></a>
+                        {{/if}}
 
-                    {{#if data.hasNextPage}}
-                    <a href="/?page={{data.nextPage}}{{data.sort}}"><button class="btn">Siguiente</button></a>
-                    {{/if}}
+                        {{#if data.hasNextPage}}
+                        <a href="/?page={{data.nextPage}}{{data.sort}}"><button class="btn">Siguiente</button></a>
+                        {{/if}}
 
-                    <a href="/?page={{data.page}}&sort=asc"><button class="btn">⬇</button></a>
-                    <a href="/?page={{data.page}}&sort=desc"><button class="btn">⬆</button></a>
-                    <a href="/?page={{data.page}}"><button class="btn">X</button></a>
+                        <a href="/?page={{data.page}}&sort=asc"><button class="btn">⬇</button></a>
+                        <a href="/?page={{data.page}}&sort=desc"><button class="btn">⬆</button></a>
+                        <a href="/?page={{data.page}}"><button class="btn">X</button></a>
+                    </div>
+                    <span>Página {{data.page}} de {{data.totalPages}} ({{data.totalDocs}} documentos)</span>
+                    <input type="text" id="cartIdInput" placeholder="Escribe el id del carrito para visualizarlo">
                 </div>
-            <span>Página {{data.page}} de {{data.totalPages}} ({{data.totalDocs}} documentos)</span>
-            <input type="text" id="cartIdInput" placeholder="Escribe el id del carrito para visualizarlo">
-            </div>
             </div>
         </main>
     </div>

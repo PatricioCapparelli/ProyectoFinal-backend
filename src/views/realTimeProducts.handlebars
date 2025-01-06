@@ -1,12 +1,13 @@
-<div class="content">
+<div class="content-home">
     <div class="container">
         <header>
-            <h1>Home - Productos en tiempo real</h1>
+            <h1>Creador - online</h1>
         </header>
 
-        <main class="container-list">
-            <main class="container-products">
-                <section class="container-products__table">
+        <main class="section">
+            <h3>Productos en tiempo real</h3>
+            <section class="section-body">
+                <article class="container-products__table">
                     <h3>Productos</h3>
                     <table>
                         <thead>
@@ -18,11 +19,11 @@
                         </thead>
                         <tbody id="products-table-rows"></tbody>
                     </table>
-                </section>
+                </article>
 
-                <section class="container-product__form">
+                <article class="container-product__form">
                     <h3>Formulario de Productos</h3>
-                    <form id="products-form">
+                    <form id="products-form" class="products-form-data">
                         <div>
                             <label for="title">Título</label>
                             <input type="text" name="title" id="title" maxlength="25">
@@ -60,24 +61,23 @@
                             <input type="file" name="file" id="file" accept=".png,.jpg,.webp">
                         </div>
 
-                        <input type="submit" value="Guardar" style="width: 100%">
+                        <input class="btn" type="submit" value="Guardar" style="width: 100%">
                     </form>
-                </section>
-
-                <section class="container-product__delete">
+                </article>
+                <article class="container-product__delete">
                     <h3>Eliminación de Producto</h3>
                     <div>
                         <input type="text" id="input-product-id" placeholder="ID del Producto">
-                        <button id="btn-delete-product">Eliminar</button>
+                        <button class="btn" id="btn-delete-product">Eliminar</button>
                     </div>
-                </section>
+                </article>
 
-                <section class="navigation">
+                <article class="navigation">
                     <div>
-                        <a href="/"><button>Volver al inicio</button></a>
+                        <a class="btn" href="/">Volver al inicio</a>
                     </div>
-                </section>
-            </main>
+                </article>
+            </section>
         </main>
     </div>
 </div>
