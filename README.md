@@ -35,9 +35,6 @@ Este es un proyecto basado en Node.js que utiliza Handlebars como motor de plant
         ├── random.js
         └── uploader.js
 ```
-## Requisitos
-- Node.js (versión 14 o superior).
-- MongoDB (local o en la nube).
 
 ## Instalación
 1. Clona este repositorio:
